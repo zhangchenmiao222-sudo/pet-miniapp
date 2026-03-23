@@ -40,7 +40,7 @@
   },
   "compileType": "miniprogram",
   "condition": {},
-  "libVersion": "3.3.4",
+  "libVersion": "3.15.0",
   "appid": "wxab08109c8aa66787",
   "simulatorPluginLibVersion": {},
   "editorSetting": {}
