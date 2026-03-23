@@ -197,8 +197,8 @@ Page({
 
   // 雷达图绘制（接受真实数据）
   drawRadar(radarData) {
-    // 把对象转成有序数组 [代谢, 心血管, 肾脏, 消化, 免疫, 骨骼]
-    const keys = ['代谢系统', '心血管', '肾脏', '消化系统', '免疫系统', '骨骼肌肉']
+    // 把对象转成有序数组，顺序与 WXML 标签位置对应
+    const keys = ['消化系统', '骨骼肌肉', '皮肤毛发', '心血管', '免疫系统', '内分泌']
     let dataValues
     if (radarData && typeof radarData === 'object') {
       dataValues = keys.map(k => (radarData[k] || 50) / 100)

@@ -20,8 +20,12 @@
         </view>
       </view>
       <!-- 会员标识（成员C接口） -->
-      <view class="member-tag" wx:if="{{memberInfo && memberInfo.member_type !== 'none'}}">
-        <text class="member-tag-text">{{pet.name || '会员'}} · 128¥</text>
+      <view class="member-tag" wx:if="{{memberInfo && memberInfo.is_active}}">
+        <text class="member-tag-icon">👑</text>
+        <text class="member-tag-text">{{pet.name || '会员'}} · {{memberInfo.member_type === 'month' ? '128¥' : memberInfo.member_type === 'quarter' ? '298¥' : '998¥'}}</text>
+      </view>
+      <view class="member-tag-empty" wx:elif="{{memberInfo && !memberInfo.is_active}}" bindtap="goMemberPage">
+        <text class="member-tag-text">开通会员</text>
       </view>
     </view>
 
@@ -144,12 +148,12 @@
             <text class="radar-badge">14项核心指标</text>
           </view>
           <view class="radar-chart-wrap">
-            <text class="radar-label top">代谢系统</text>
-            <text class="radar-label top-right">心血管</text>
-            <text class="radar-label bottom-right red">肾脏(干预)</text>
-            <text class="radar-label bottom red">消化系统</text>
-            <text class="radar-label bottom-left">免疫</text>
-            <text class="radar-label top-left">骨骼肌肉</text>
+            <text class="radar-label top">消化系统</text>
+            <text class="radar-label top-right">骨骼肌肉</text>
+            <text class="radar-label bottom-right">皮肤毛发</text>
+            <text class="radar-label bottom">心血管</text>
+            <text class="radar-label bottom-left">免疫系统</text>
+            <text class="radar-label top-left">内分泌</text>
             <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
           </view>
 
