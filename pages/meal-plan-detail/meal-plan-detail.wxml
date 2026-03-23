@@ -1,3 +1,61 @@
-<view class="page" style="background:#0F1923;min-height:100vh;padding:40rpx;color:#fff;">
-  <view style="font-size:32rpx;font-weight:bold;">页面建设中...</view>
+<view class="page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack"><text class="nav-back-icon">‹</text></view>
+    <text class="nav-title">定制料程详情</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="content" wx:if="{{mealPlan}}">
+    <!-- LIVE 状态卡 -->
+    <view class="status-card">
+      <view class="status-live-row">
+        <view class="live-dot {{mealPlan.is_live ? 'active' : ''}}"></view>
+        <text class="live-label">{{mealPlan.is_live ? 'LIVE · 进行中' : '已完成'}}</text>
+      </view>
+      <text class="stage-title">{{mealPlan.current_stage_label}}</text>
+      <text class="formula-name">关联配方：{{mealPlan.formula_name || '暂未关联'}}</text>
+    </view>
+
+    <!-- 四阶段进度 -->
+    <view class="section-card">
+      <text class="section-title">料程阶段</text>
+      <view class="stages-row">
+        <view class="stage-item {{mealPlan.current_stage === 'cleaning' ? 'active' : ''}}">
+          <view class="stage-icon">🔬</view>
+          <text class="stage-label">梳理消炎</text>
+        </view>
+        <view class="stage-arrow">›</view>
+        <view class="stage-item {{mealPlan.current_stage === 'production' ? 'active' : ''}}">
+          <view class="stage-icon">🤖</view>
+          <text class="stage-label">配方生产</text>
+        </view>
+        <view class="stage-arrow">›</view>
+        <view class="stage-item {{mealPlan.current_stage === 'additives' ? 'active' : ''}}">
+          <view class="stage-icon">🔥</view>
+          <text class="stage-label">特殊添加剂</text>
+        </view>
+        <view class="stage-arrow">›</view>
+        <view class="stage-item {{mealPlan.current_stage === 'feeding' ? 'active' : ''}}">
+          <view class="stage-icon">🚚</view>
+          <text class="stage-label">正式喂养</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 进度详情 -->
+    <view class="section-card">
+      <text class="section-title">执行进度</text>
+      <view class="progress-row">
+        <view class="progress-bg">
+          <view class="progress-fill" style="width: {{mealPlan.progress_pct}}%"></view>
+        </view>
+        <text class="progress-num">{{mealPlan.progress_pct}}%</text>
+      </view>
+      <text class="planned-days">已计划 {{mealPlan.planned_days}} 天</text>
+    </view>
+  </view>
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
 </view>

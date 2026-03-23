@@ -1,3 +1,24 @@
-<view class="page" style="background:#0F1923;min-height:100vh;padding:40rpx;color:#fff;">
-  <view style="font-size:32rpx;font-weight:bold;">页面建设中...</view>
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack"><text class="nav-back-icon">‹</text></view>
+    <text class="nav-title">科普文章</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="content" wx:if="{{article}}">
+    <text class="category-tag">{{article.category}}</text>
+    <text class="title">{{article.title}}</text>
+    <view class="meta-row">
+      <text class="author">妙巧巧·医学分析团队</text>
+      <text class="views">{{article.view_count}} 次阅读</text>
+    </view>
+    <view class="divider"></view>
+    <!-- 富文本正文 -->
+    <rich-text nodes="{{article.content}}" class="body-text"></rich-text>
+  </view>
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
 </view>

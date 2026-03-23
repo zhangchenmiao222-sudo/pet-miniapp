@@ -1,3 +1,65 @@
-<view class="page" style="background:#0F1923;min-height:100vh;padding:40rpx;color:#fff;">
-  <view style="font-size:32rpx;font-weight:bold;">页面建设中...</view>
+<view class="page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack"><text class="nav-back-icon">‹</text></view>
+    <text class="nav-title">专属配方详情</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="content" wx:if="{{formula}}">
+    <!-- 配方标题 -->
+    <view class="formula-header-card">
+      <text class="period-tag">第 {{formula.period_num}} 期</text>
+      <text class="formula-name">{{formula.name}}</text>
+      <text class="core-indicator">{{formula.core_indicator}}</text>
+    </view>
+
+    <!-- 营养成分 -->
+    <view class="section-card">
+      <text class="section-title">营养成分</text>
+      <view class="nutrients-row">
+        <view class="nutrient-item">
+          <text class="nutrient-val">{{formula.protein_pct}}%</text>
+          <text class="nutrient-label">蛋白质</text>
+        </view>
+        <view class="nutrient-sep"></view>
+        <view class="nutrient-item">
+          <text class="nutrient-val">{{formula.fat_pct}}%</text>
+          <text class="nutrient-label">脂肪</text>
+        </view>
+        <view class="nutrient-sep"></view>
+        <view class="nutrient-item">
+          <text class="nutrient-val">{{formula.calories_per_100g}}</text>
+          <text class="nutrient-label">千卡/100g</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 特殊营养素 -->
+    <view class="section-card" wx:if="{{formula.special_nutrients.length > 0}}">
+      <text class="section-title">特殊营养素</text>
+      <view class="tags-row">
+        <view class="nutrient-tag" wx:for="{{formula.special_nutrients}}" wx:key="index">
+          <text class="nutrient-tag-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 食材清单 -->
+    <view class="section-card" wx:if="{{ingredients.length > 0}}">
+      <text class="section-title">食材清单</text>
+      <view class="ingredient-item" wx:for="{{ingredients}}" wx:key="id">
+        <view class="ingredient-left">
+          <text class="ingredient-name">{{item.name}}</text>
+          <text class="ingredient-category">{{item.category}} · {{item.label_type === 'front' ? '前标' : '后标'}}</text>
+        </view>
+        <view class="ingredient-right">
+          <text class="ingredient-amount">{{item.amount_g}}g</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
 </view>
