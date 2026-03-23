@@ -1,3 +1,14 @@
-<view class="page" style="background:#0F1923;min-height:100vh;padding:40rpx;color:#fff;">
-  <view style="font-size:32rpx;font-weight:bold;">页面建设中...</view>
+<view class="login-page">
+  <view class="brand-area">
+    <text class="brand-icon">🔬</text>
+    <text class="brand-name">妙巧巧 · MPFD</text>
+    <text class="brand-sub">Animal Precision Nutrition</text>
+  </view>
+
+  <view class="login-btn-wrap">
+    <view class="login-btn {{loading ? 'disabled' : ''}}" bindtap="onLogin">
+      <text class="login-btn-text">{{loading ? '登录中...' : '微信一键登录'}}</text>
+    </view>
+    <text class="login-tip">登录即代表同意《用户隐私协议》</text>
+  </view>
 </view>

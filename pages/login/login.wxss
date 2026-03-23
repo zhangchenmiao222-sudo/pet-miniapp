@@ -1,1 +1,30 @@
-.page { background: #0F1923; }
+.login-page {
+  background: #0F1923;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 60rpx;
+}
+.brand-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 120rpx;
+}
+.brand-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.brand-name { font-size: 44rpx; font-weight: bold; color: #fff; margin-bottom: 12rpx; }
+.brand-sub { font-size: 24rpx; color: #8899AA; letter-spacing: 2rpx; }
+.login-btn-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.login-btn {
+  width: 100%;
+  background: #3B7DD8;
+  border-radius: 48rpx;
+  padding: 32rpx 0;
+  text-align: center;
+  margin-bottom: 24rpx;
+}
+.login-btn.disabled { opacity: 0.6; }
+.login-btn-text { color: #fff; font-size: 32rpx; font-weight: bold; }
+.login-tip { font-size: 22rpx; color: #8899AA; }
