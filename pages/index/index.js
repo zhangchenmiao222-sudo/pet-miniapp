@@ -57,6 +57,7 @@ Page({
       // 先拿宠物列表，取第一只
       const petRes = await request({ url: '/pets' })
       if (!petRes.data || petRes.data.length === 0) {
+        console.log('宠物列表为空，停止加载')
         this.setData({ loading: false })
         return
       }
