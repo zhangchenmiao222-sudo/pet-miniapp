@@ -21,6 +21,8 @@ Page({
     articles: [],
     // 会员信息（成员C接口）
     memberInfo: null,
+    // 雷达图标红标记（6维，true=标红）
+    alertFlags: [false, false, false, false, false, false],
     // 动画
     pulse: true,
     // 加载状态
@@ -94,7 +96,10 @@ Page({
         if (typeof report.radar_data === 'string') {
           report.radar_data = JSON.parse(report.radar_data || '{}')
         }
-        this.setData({ report })
+        // 计算哪些维度需要标红（<60分）
+        const keys = ['消化系统', '骨骼肌肉', '皮肤毛发', '心血管', '免疫系统', '内分泌']
+        const alertFlags = keys.map(k => (report.radar_data[k] || 100) < 60)
+        this.setData({ report, alertFlags })
         // 数据就绪后画雷达图
         this.drawRadar(report.radar_data)
       }

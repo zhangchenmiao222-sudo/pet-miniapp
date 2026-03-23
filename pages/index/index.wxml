@@ -148,12 +148,12 @@
             <text class="radar-badge">14项核心指标</text>
           </view>
           <view class="radar-chart-wrap">
-            <text class="radar-label top">消化系统</text>
-            <text class="radar-label top-right">骨骼肌肉</text>
-            <text class="radar-label bottom-right">皮肤毛发</text>
-            <text class="radar-label bottom">心血管</text>
-            <text class="radar-label bottom-left">免疫系统</text>
-            <text class="radar-label top-left">内分泌</text>
+            <text class="radar-label top {{alertFlags[0] ? 'red' : ''}}">消化系统</text>
+            <text class="radar-label top-right {{alertFlags[1] ? 'red' : ''}}">骨骼肌肉</text>
+            <text class="radar-label bottom-right {{alertFlags[2] ? 'red' : ''}}">皮肤毛发</text>
+            <text class="radar-label bottom {{alertFlags[3] ? 'red' : ''}}">心血管</text>
+            <text class="radar-label bottom-left {{alertFlags[4] ? 'red' : ''}}">免疫系统</text>
+            <text class="radar-label top-left {{alertFlags[5] ? 'red' : ''}}">内分泌</text>
             <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
           </view>
 

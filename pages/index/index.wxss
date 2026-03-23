@@ -625,8 +625,8 @@
 
 .radar-label.top { top: 0; left: 50%; transform: translateX(-50%); }
 .radar-label.top-right { top: 22%; right: 8rpx; }
-.radar-label.bottom-right { bottom: 22%; right: 0; color: #ef4444; font-weight: 900; }
-.radar-label.bottom { bottom: 0; left: 50%; transform: translateX(-50%); color: #ef4444; font-weight: 900; }
+.radar-label.bottom-right { bottom: 22%; right: 0; }
+.radar-label.bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
 .radar-label.bottom-left { bottom: 22%; left: 16rpx; }
 .radar-label.top-left { top: 22%; left: 16rpx; }
 .radar-label.red { color: #ef4444; font-weight: 900; }
