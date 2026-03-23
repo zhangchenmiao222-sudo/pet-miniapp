@@ -1,13 +1,20 @@
 <!-- 养护管理页面 MPFD -->
 <scroll-view scroll-y class="page-container">
 
+  <!-- 加载状态 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:if="{{!loading}}">
+
   <!-- ===== 区域1：顶部品牌栏 ===== -->
   <view class="header-bar">
     <view class="header-left">
       <view class="brand-name">妙巧巧·MPFD</view>
       <view class="brand-sub">ANIMAL PRECISION NUTRITION</view>
     </view>
-    <view class="header-right">
+    <view class="header-right" wx:if="{{pet && member}}">
       <view class="member-tag" bindtap="onViewMember">
         {{pet.name}}：{{member.price}}¥
       </view>
@@ -15,7 +22,7 @@
   </view>
 
   <!-- ===== 区域2：宠物信息卡片 ===== -->
-  <view class="section pet-section">
+  <view class="section pet-section" wx:if="{{pet}}">
     <view class="pet-main-info">
       <view class="pet-name">{{pet.name}}</view>
       <view class="pet-basic">{{pet.breed}} · {{pet.age_years}}岁 · {{pet.weight_kg}}kg</view>
@@ -28,16 +35,16 @@
   </view>
 
   <!-- ===== 区域3：专属配方卡片 ===== -->
-  <view class="section card">
+  <view class="section card" wx:if="{{formula}}">
     <view class="card-label">专属配方 · 第{{formula.period_num}}期</view>
     <view class="formula-name">{{formula.name}}</view>
     <view class="formula-indicator">{{formula.core_indicator}}</view>
 
-    <view class="ingredients-row">
+    <view class="ingredients-row" wx:if="{{ingredients.length > 0}}">
       <text class="ingredient-item" wx:for="{{ingredients}}" wx:key="index">{{item.name}}</text>
     </view>
 
-    <view class="nutrients-tags">
+    <view class="nutrients-tags" wx:if="{{formula.special_nutrients.length > 0}}">
       <text class="nutrient-tag" wx:for="{{formula.special_nutrients}}" wx:key="index">{{item}}</text>
     </view>
 
@@ -51,15 +58,15 @@
   </view>
 
   <!-- ===== 区域4：医学综合分析报告 ===== -->
-  <view class="section card">
+  <view class="section card" wx:if="{{report}}">
     <view class="report-header">
       <text class="report-no">{{report.report_no}}</text>
       <text class="verified-tag" wx:if="{{report.verified}}">VERIFIED</text>
     </view>
     <view class="section-title">医学综合分析报告</view>
-    <view class="section-sub">15页详细报告 · 涵盖多维生理活性系统</view>
+    <view class="section-sub">{{report.total_pages || 18}}页详细报告 · 涵盖多维生理活性系统</view>
 
-    <!-- 雷达图占位区域（后续替换为真实组件） -->
+    <!-- 雷达图组件 -->
     <view class="radar-placeholder">
       <radar-chart radar-data="{{report.radar_data}}" />
     </view>
@@ -86,7 +93,7 @@
   </view>
 
   <!-- ===== 区域5：今日养护看板 ===== -->
-  <view class="section card">
+  <view class="section card" wx:if="{{dailyCare}}">
     <view class="dashboard-header">
       <view class="dashboard-title-wrap">
         <text class="section-title">今日养护看板</text>
@@ -95,7 +102,7 @@
     </view>
 
     <view class="total-food">
-      <text class="total-num">{{dailyCare.total_food_g}}g</text>
+      <text class="total-num">{{dailyCare.total_food_g || (dailyCare.meat_g + dailyCare.middle_g + dailyCare.veggie_g)}}g</text>
       <text class="total-label">今日总食量</text>
     </view>
 
@@ -115,7 +122,7 @@
     </view>
 
     <!-- 散步指令 -->
-    <view class="walk-card">
+    <view class="walk-card" wx:if="{{dailyCare.walk_plan}}">
       <view class="walk-info">
         <text class="walk-title">餐后散步指令</text>
         <text class="walk-desc">{{dailyCare.walk_plan.duration_desc}} · {{dailyCare.walk_plan.name}}</text>
@@ -148,7 +155,7 @@
   </view>
 
   <!-- ===== 区域6：定制料程 ===== -->
-  <view class="section card">
+  <view class="section card" wx:if="{{mealPlan}}">
     <view class="section-title">{{pet.name}}的专属定制料程</view>
 
     <view class="stage-tabs">
@@ -173,7 +180,7 @@
   </view>
 
   <!-- ===== 区域7：营养科普文章 ===== -->
-  <view class="section card">
+  <view class="section card" wx:if="{{article}}">
     <view class="article-title">{{article.title}}</view>
     <view class="article-preview">{{article.preview}}</view>
     <view class="read-more" bindtap="onViewArticle">阅读全文 ></view>
@@ -181,4 +188,5 @@
 
   <view class="page-bottom">妙巧巧—精准宠物营养管理</view>
 
+  </block>
 </scroll-view>

@@ -1,154 +1,206 @@
 const { request } = require('../../utils/request')
+const app = getApp()
 
 Page({
   data: {
     // 宠物信息
-    pet: {
-      name: '肉丸',
-      breed: '柯基',
-      age_years: 4.5,
-      weight_kg: 13.3,
-      pet_no: 'MY-2829-0403',
-      health_tags: ['肠胃敏感', '消化保护'],
-      photo_urls: []
-    },
+    pet: null,
     // 配方信息
-    formula: {
-      period_num: 8,
-      name: '低磷护肾·易消化膳',
-      core_indicator: '磷含量≤0.6%DM，升磷脱氧酶比',
-      protein_pct: 29.0,
-      fat_pct: 14.0,
-      calories_per_100g: 80,
-      special_nutrients: ['Omega-3', '牛磺酸']
-    },
-    ingredients: [
-      { name: '鸡胸肉', category: '肉类' },
-      { name: '鸡心', category: '肉类' },
-      { name: '鸭胸肉', category: '肉类' }
-    ],
+    formula: null,
+    ingredients: [],
     // 医学报告
-    report: {
-      report_no: 'NO.00005',
-      verified: true,
-      excellent_count: 7,
-      observe_count: 5,
-      intervene_count: 2,
-      radar_data: {
-        '消化系统': 85,
-        '骨骼肌肉': 78,
-        '皮肤毛发': 92,
-        '心血管': 88,
-        '免疫系统': 70,
-        '神经系统': 95
-      }
-    },
+    report: null,
     // 今日养护
-    dailyCare: {
-      day_count: 23,
-      meals_count: 4,
-      total_food_g: 683,
-      meat_g: 228,
-      middle_g: 228,
-      veggie_g: 227,
-      water_ml: 420,
-      water_target_ml: 1000,
-      walk_completed: false,
-      walk_plan: { name: '舒缓低速环L', duration_desc: '18-20分钟' },
-      extra_records: [
-        { name: '西梅花茶', amount: '30g' },
-        { name: '蛋黄', amount: '半个' }
-      ]
-    },
+    dailyCare: null,
     // 料程
-    mealPlan: {
-      current_stage: 'additives',
-      current_stage_label: '特殊添加剂准备',
-      progress_pct: 65,
-      planned_days: 15,
-      is_live: true
-    },
+    mealPlan: null,
     // 科普文章
-    article: {
-      title: '为什么说同型半胱氨酸是血管的「慢损指示器」？',
-      preview: '同型半胱氨酸（Hcy）是蛋氨酸代谢过程中产生的中间产物。研究表明，当宠物体内Hcy水平持续偏高时，会对血管内皮造成持续性损伤...'
-    },
+    article: null,
     // 会员信息
-    member: {
-      type: 'yearly',
-      price: 128
-    }
+    member: null,
+    // 加载状态
+    loading: true
   },
 
   onLoad() {
-    // 阶段0：先显示假数据，后续替换为真实API
-    // this.loadAllData()
+    this.checkLoginAndLoad()
   },
 
-  // 预留：加载所有数据（阶段2-3时启用）
+  onShow() {
+    // 从其他页面返回时刷新数据
+    if (this.data.pet && !this.data.loading) {
+      this.loadAllData()
+    }
+  },
+
+  checkLoginAndLoad() {
+    const token = wx.getStorageSync('token')
+    if (!token) {
+      wx.redirectTo({ url: '/pages/login/login' })
+      return
+    }
+    app.globalData.token = token
+    this.loadAllData()
+  },
+
   async loadAllData() {
     try {
-      const petId = 1
-      const [petRes, formulaRes, reportRes, careRes, planRes] = await Promise.all([
-        request({ url: `/pets/${petId}` }),
+      // 先拿宠物列表，取第一只
+      const petRes = await request({ url: '/pets' })
+      if (!petRes.data || petRes.data.length === 0) {
+        this.setData({ loading: false })
+        return
+      }
+      const pet = petRes.data[0]
+      if (typeof pet.health_tags === 'string') {
+        pet.health_tags = JSON.parse(pet.health_tags || '[]')
+      }
+      this.setData({ pet })
+
+      const petId = pet.id
+
+      // 并行请求其余数据
+      const [formulaRes, reportRes, careRes, mealRes, articleRes, memberRes] = await Promise.allSettled([
         request({ url: `/pets/${petId}/formula` }),
         request({ url: `/pets/${petId}/medical-report` }),
         request({ url: `/pets/${petId}/daily-care/today` }),
-        request({ url: `/pets/${petId}/meal-plan` })
+        request({ url: `/pets/${petId}/meal-plan` }),
+        request({ url: '/articles' }),
+        request({ url: '/member/info' })
       ])
-      this.setData({
-        pet: petRes.data,
-        formula: formulaRes.data.formula,
-        ingredients: formulaRes.data.ingredients,
-        report: reportRes.data,
-        dailyCare: careRes.data,
-        mealPlan: planRes.data
-      })
-    } catch (err) {
-      console.error('加载数据失败', err)
+
+      // 配方
+      if (formulaRes.status === 'fulfilled' && formulaRes.value.data) {
+        this.setData({
+          formula: formulaRes.value.data.formula,
+          ingredients: formulaRes.value.data.ingredients || []
+        })
+      }
+
+      // 医学报告
+      if (reportRes.status === 'fulfilled' && reportRes.value.data) {
+        const report = reportRes.value.data
+        if (typeof report.radar_data === 'string') {
+          report.radar_data = JSON.parse(report.radar_data || '{}')
+        }
+        this.setData({ report })
+      }
+
+      // 今日养护
+      if (careRes.status === 'fulfilled' && careRes.value.data) {
+        const care = careRes.value.data
+        if (typeof care.extra_records === 'string') {
+          care.extra_records = JSON.parse(care.extra_records || '[]')
+        }
+        this.setData({ dailyCare: care })
+      }
+
+      // 料程
+      if (mealRes.status === 'fulfilled' && mealRes.value.data) {
+        this.setData({ mealPlan: mealRes.value.data })
+      }
+
+      // 科普文章（取第一篇做预览）
+      if (articleRes.status === 'fulfilled' && articleRes.value.data) {
+        const articles = articleRes.value.data
+        if (articles.length > 0) {
+          this.setData({
+            article: {
+              id: articles[0].id,
+              title: articles[0].title,
+              preview: articles[0].content ? articles[0].content.replace(/<[^>]+>/g, '').substring(0, 100) + '...' : ''
+            }
+          })
+        }
+      }
+
+      // 会员信息
+      if (memberRes.status === 'fulfilled' && memberRes.value.data) {
+        const memberData = memberRes.value.data
+        this.setData({
+          member: {
+            type: memberData.member_type || 'none',
+            price: memberData.member_type === 'yearly' ? 128 : memberData.member_type === 'quarterly' ? 48 : 18
+          }
+        })
+      }
+
+    } catch (e) {
+      wx.showToast({ title: '数据加载失败', icon: 'none' })
+    } finally {
+      this.setData({ loading: false })
     }
   },
 
   // 饮水 +100ml
-  onAddWater() {
+  async onAddWater() {
+    if (!this.data.dailyCare || !this.data.pet) return
     const newWater = this.data.dailyCare.water_ml + 100
     this.setData({ 'dailyCare.water_ml': newWater })
-    // 后续接API：request({ url: `/pets/1/daily-care/water`, method: 'POST', data: { add_ml: 100 } })
+    wx.vibrateShort({ type: 'light' })
+    try {
+      await request({
+        url: `/pets/${this.data.pet.id}/daily-care/water`,
+        method: 'POST',
+        data: { add_ml: 100 }
+      })
+    } catch (e) { /* 静默失败，本地已更新 */ }
   },
 
   // 跳转配方详情
   onViewFormula() {
-    wx.navigateTo({ url: '/pages/formula-detail/formula-detail' })
+    const petId = this.data.pet ? this.data.pet.id : 1
+    wx.navigateTo({ url: `/pages/formula-detail/formula-detail?petId=${petId}` })
   },
 
   // 跳转医学报告
   onViewReport() {
-    wx.navigateTo({ url: '/pages/medical-report/medical-report' })
+    const petId = this.data.pet ? this.data.pet.id : 1
+    wx.navigateTo({ url: `/pages/medical-report/medical-report?petId=${petId}` })
   },
 
   // 跳转料程详情
   onViewMealPlan() {
-    wx.navigateTo({ url: '/pages/meal-plan-detail/meal-plan-detail' })
+    const petId = this.data.pet ? this.data.pet.id : 1
+    wx.navigateTo({ url: `/pages/meal-plan-detail/meal-plan-detail?petId=${petId}` })
   },
 
   // 跳转文章详情
   onViewArticle() {
-    wx.navigateTo({ url: '/pages/article-detail/article-detail' })
+    const articleId = this.data.article ? this.data.article.id : ''
+    if (articleId) {
+      wx.navigateTo({ url: `/pages/article-detail/article-detail?id=${articleId}` })
+    }
+  },
+
+  // 查看会员
+  onViewMember() {
+    wx.navigateTo({ url: '/pages/profile/profile' })
   },
 
   // 添加额外记录
-  onAddExtra() {
+  async onAddExtra() {
     wx.showModal({
       title: '添加额外记录',
       editable: true,
       placeholderText: '如：西梅花茶 30g',
-      success: (res) => {
+      success: async (res) => {
         if (res.confirm && res.content) {
           const parts = res.content.trim().split(' ')
           const name = parts[0] || res.content
           const amount = parts[1] || ''
-          const list = [...this.data.dailyCare.extra_records, { name, amount }]
+          const list = [...(this.data.dailyCare.extra_records || []), { name, amount }]
           this.setData({ 'dailyCare.extra_records': list })
+          // 同步到后端
+          if (this.data.pet) {
+            try {
+              await request({
+                url: `/pets/${this.data.pet.id}/daily-care/extra`,
+                method: 'POST',
+                data: { name, amount }
+              })
+            } catch (e) { /* 静默 */ }
+          }
         }
       }
     })

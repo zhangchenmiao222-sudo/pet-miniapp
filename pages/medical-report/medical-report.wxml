@@ -1,3 +1,95 @@
-<view class="page" style="background:#0F1923;min-height:100vh;padding:40rpx;color:#fff;">
-  <view style="font-size:32rpx;font-weight:bold;">页面建设中...</view>
+<!-- 医学综合分析报告详情页 -->
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack"><text class="nav-back-icon">‹</text></view>
+    <text class="nav-title">医学综合分析报告</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="content" wx:if="{{report}}">
+    <!-- 报告头部 -->
+    <view class="report-header-card">
+      <view class="report-top-row">
+        <text class="report-no">{{report.report_no}}</text>
+        <text class="verified-badge" wx:if="{{report.verified}}">VERIFIED</text>
+      </view>
+      <text class="report-main-title">医学综合分析报告</text>
+      <text class="report-sub">{{report.total_pages || 18}}页详细报告 · 涵盖多维生理活性系统</text>
+    </view>
+
+    <!-- 雷达图区域 -->
+    <view class="section-card">
+      <text class="section-title">全系统多维健康分析图谱</text>
+      <view class="radar-wrap">
+        <canvas id="reportRadar" type="2d" class="radar-canvas"></canvas>
+      </view>
+    </view>
+
+    <!-- 三级指标汇总 -->
+    <view class="section-card">
+      <text class="section-title">健康评估汇总</text>
+      <view class="score-summary">
+        <view class="score-block green-block">
+          <text class="score-block-num">{{report.excellent_count}}</text>
+          <text class="score-block-label">卓越健康</text>
+        </view>
+        <view class="score-block orange-block">
+          <text class="score-block-num">{{report.observe_count}}</text>
+          <text class="score-block-label">黄金观察</text>
+        </view>
+        <view class="score-block blue-block">
+          <text class="score-block-num">{{report.intervene_count}}</text>
+          <text class="score-block-label">营养干预</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 六维详细评分 -->
+    <view class="section-card" wx:if="{{radarData}}">
+      <text class="section-title">六维系统评分</text>
+      <view class="dimension-list">
+        <view class="dimension-item" wx:for="{{radarLabels}}" wx:key="index">
+          <view class="dim-left">
+            <text class="dim-name">{{item}}</text>
+          </view>
+          <view class="dim-right">
+            <view class="dim-bar-bg">
+              <view class="dim-bar-fill {{radarData[item] >= 85 ? 'green' : radarData[item] >= 60 ? 'orange' : 'red'}}" style="width: {{radarData[item] || 0}}%"></view>
+            </view>
+            <text class="dim-score {{radarData[item] < 60 ? 'red' : ''}}">{{radarData[item] || 0}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 14项核心指标 -->
+    <view class="section-card" wx:if="{{indicators.length > 0}}">
+      <text class="section-title">14项核心指标</text>
+      <view class="indicator-list">
+        <view class="indicator-item" wx:for="{{indicators}}" wx:key="index">
+          <view class="ind-left">
+            <text class="ind-name">{{item.name}}</text>
+            <text class="ind-desc" wx:if="{{item.description}}">{{item.description}}</text>
+          </view>
+          <view class="ind-right">
+            <text class="ind-value">{{item.value}}{{item.unit || ''}}</text>
+            <text class="ind-status {{item.status === 'excellent' ? 'green' : item.status === 'observe' ? 'orange' : 'red'}}">
+              {{item.status === 'excellent' ? '卓越' : item.status === 'observe' ? '观察' : '干预'}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <text class="loading-text">报告加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-wrap" wx:if="{{!loading && !report}}">
+    <text class="empty-text">暂无报告数据</text>
+  </view>
 </view>

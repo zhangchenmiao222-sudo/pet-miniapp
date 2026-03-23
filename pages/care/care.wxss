@@ -318,3 +318,7 @@
   color: var(--text-muted);
   padding: 30rpx 0 50rpx;
 }
+
+/* 加载状态 */
+.loading-wrap { padding: 200rpx 0; text-align: center; }
+.loading-text { color: var(--text-secondary); font-size: 28rpx; }

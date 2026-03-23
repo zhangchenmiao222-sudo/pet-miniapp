@@ -3,6 +3,7 @@
 
   <!-- ===================== 第一屏：英雄区 ===================== -->
   <view class="hero-section">
+    <!-- 全屏背景图 -->
     <image class="hero-bg" src="https://images.unsplash.com/photo-1544568100-847a948585b9?q=80&w=1000&auto=format&fit=crop" mode="aspectFill" />
     <view class="hero-mask"></view>
     <view class="hero-radial"></view>
@@ -10,7 +11,9 @@
     <!-- 顶部品牌区 -->
     <view class="brand-area">
       <view class="brand-left">
-        <view class="brand-icon"><text class="brand-icon-text">🔬</text></view>
+        <view class="brand-icon">
+          <text class="brand-icon-text">🔬</text>
+        </view>
         <view class="brand-info">
           <text class="brand-name">妙巧巧 · MPFD</text>
           <view class="brand-tags">
@@ -37,6 +40,7 @@
 
     <!-- 宠物名称与信息 -->
     <view class="pet-identity" wx:if="{{pet}}">
+      <!-- 分享按钮 -->
       <view class="share-btn" bindtap="onShareCard">
         <text class="share-btn-icon">↗</text>
         <text class="share-btn-text">分享档案</text>
@@ -45,6 +49,7 @@
       <text class="pet-info">{{pet.breed}} · {{pet.age_years}}岁 · {{pet.weight_kg}}kg</text>
       <view class="pet-status">
         <view class="status-pill" wx:for="{{pet.health_tags}}" wx:key="index">
+          <text class="status-icon">📊</text>
           <text class="status-text">{{item}}</text>
         </view>
       </view>
@@ -54,7 +59,7 @@
       </view>
     </view>
 
-    <!-- 过渡文案 -->
+    <!-- 报告→配方过渡引导文案 -->
     <view class="transition-guide" wx:if="{{pet}}">
       <view class="transition-line"></view>
       <text class="transition-text">基于以上检测结果，我们为{{pet.name}}定制了专属营养方案 ↓</text>
@@ -63,10 +68,12 @@
 
     <!-- ========== 专属配方卡片 ========== -->
     <view class="formula-card" wx:if="{{formula}}">
+      <!-- 血检定制原因说明 -->
       <view class="formula-reason">
         <text class="formula-reason-icon">🩸</text>
         <text class="formula-reason-text">{{formula.core_indicator}}</text>
       </view>
+      <!-- 标题 -->
       <view class="formula-header">
         <view class="formula-label-row">
           <text class="formula-label">专属配方</text>
@@ -76,7 +83,15 @@
         <text class="formula-title">「{{formula.name}}」</text>
       </view>
 
+      <!-- 核心目标 -->
+      <view class="formula-goal" wx:if="{{formula.goal_text}}">
+        <text class="formula-goal-text">{{formula.goal_text}}</text>
+        <text class="formula-goal-icon">📈</text>
+      </view>
+
+      <!-- 图文混排 -->
       <view class="formula-content">
+        <!-- 左侧实拍图 -->
         <view class="formula-img-wrap">
           <image class="formula-img" src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?q=80&w=400&h=400&auto=format&fit=crop" mode="aspectFill" />
           <view class="formula-img-badge">
@@ -85,10 +100,13 @@
           </view>
         </view>
 
+        <!-- 右侧配料 -->
         <view class="formula-details">
           <!-- 食材列表 -->
           <view class="formula-detail-item" wx:if="{{ingredients.length > 0}}">
-            <view class="detail-icon-wrap red"><text class="detail-emoji">🥩</text></view>
+            <view class="detail-icon-wrap red">
+              <text class="detail-emoji">🥩</text>
+            </view>
             <view class="detail-text">
               <text class="detail-label">蛋白组合</text>
               <text class="detail-value">{{ingredients[0].name}}{{ingredients.length > 1 ? '·' + ingredients[1].name : ''}}{{ingredients.length > 2 ? '·' + ingredients[2].name : ''}}</text>
@@ -96,7 +114,9 @@
           </view>
           <!-- 特殊营养素 -->
           <view class="formula-detail-item" wx:if="{{formula.special_nutrients.length > 0}}">
-            <view class="detail-icon-wrap yellow"><text class="detail-emoji">💊</text></view>
+            <view class="detail-icon-wrap yellow">
+              <text class="detail-emoji">💊</text>
+            </view>
             <view class="detail-text">
               <text class="detail-label">特调补充</text>
               <text class="detail-value">{{formula.special_nutrients.join('·')}}</text>
@@ -105,6 +125,7 @@
         </view>
       </view>
 
+      <!-- 底部营养配比 -->
       <view class="formula-footer">
         <view class="formula-nutrients">
           <text class="nutrient-text">蛋白质 {{formula.protein_pct}}%</text>
@@ -123,9 +144,11 @@
 
     <!-- ========== 医学综合分析报告（成员C接口） ========== -->
     <view class="report-card" wx:if="{{report}}">
+      <!-- 情感文案 -->
       <view class="emotion-banner">
         <text class="emotion-text">每一项指标背后，都是我们对{{pet.name}}健康的深度守护</text>
       </view>
+      <!-- 深色头部 -->
       <view class="report-header">
         <view class="report-header-bg">🔬</view>
         <view class="report-header-content">
@@ -137,26 +160,35 @@
             <text class="report-title">医学综合分析报告</text>
             <text class="report-subtitle">{{report.total_pages}}页深度解析 · 涵盖6大生理系统</text>
           </view>
-          <view class="report-icon-box"><text class="report-icon-text">📄</text></view>
+          <view class="report-icon-box">
+            <text class="report-icon-text">📄</text>
+          </view>
         </view>
       </view>
 
+      <!-- 白色内容区 -->
       <view class="report-body">
         <view class="report-inner-card">
+          <!-- 标题行 -->
           <view class="radar-title-row">
             <text class="radar-title">全系统多维健康透析画像</text>
             <text class="radar-badge">14项核心指标</text>
           </view>
+
+          <!-- SVG雷达图（用 canvas 或 view 模拟） -->
           <view class="radar-chart-wrap">
+            <!-- 外围标签 -->
             <text class="radar-label top {{alertFlags[0] ? 'red' : ''}}">消化系统</text>
             <text class="radar-label top-right {{alertFlags[1] ? 'red' : ''}}">骨骼肌肉</text>
             <text class="radar-label bottom-right {{alertFlags[2] ? 'red' : ''}}">皮肤毛发</text>
             <text class="radar-label bottom {{alertFlags[3] ? 'red' : ''}}">心血管</text>
             <text class="radar-label bottom-left {{alertFlags[4] ? 'red' : ''}}">免疫系统</text>
             <text class="radar-label top-left {{alertFlags[5] ? 'red' : ''}}">内分泌</text>
+            <!-- 占位图区域 - 用 canvas 绘制雷达图 -->
             <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
           </view>
 
+          <!-- 结论清单 -->
           <view class="conclusion-list">
             <view class="conclusion-item">
               <view class="conclusion-icon green">✓</view>
@@ -169,6 +201,7 @@
                 <text class="count-unit">项</text>
               </view>
             </view>
+
             <view class="conclusion-item">
               <view class="conclusion-icon amber">⚠</view>
               <view class="conclusion-text">
@@ -180,6 +213,7 @@
                 <text class="count-unit">项</text>
               </view>
             </view>
+
             <view class="conclusion-item">
               <view class="conclusion-icon blue">⚗</view>
               <view class="conclusion-text">
@@ -194,6 +228,7 @@
           </view>
         </view>
 
+        <!-- 查阅报告按钮 -->
         <view class="report-btn" bindtap="goReportDetail">
           <text class="report-btn-icon">📄</text>
           <text class="report-btn-text">查阅 {{report.total_pages}} 页完整分析报告</text>
@@ -206,9 +241,12 @@
     <view class="care-card" wx:if="{{dailyCare}}">
       <view class="care-bg-circle"></view>
       <view class="care-content">
+        <!-- 头部 -->
         <view class="care-header">
           <view class="care-header-left">
-            <view class="care-icon-box"><text class="care-icon-text">⚖️</text></view>
+            <view class="care-icon-box">
+              <text class="care-icon-text">⚖️</text>
+            </view>
             <view class="care-title-wrap">
               <text class="care-title">今日养护看板</text>
               <text class="care-subtitle">第 {{dailyCare.meals_count}} 餐 · 第 {{dailyCare.day_count}} 天</text>
@@ -217,6 +255,7 @@
           <view class="care-status-tag">精准执行中</view>
         </view>
 
+        <!-- 总食量与三餐 -->
         <view class="meal-section">
           <view class="meal-total-row">
             <view class="meal-total-left">
@@ -228,6 +267,7 @@
             <text class="meal-count-tag">分 {{dailyCare.meals_count}} 餐</text>
           </view>
 
+          <!-- 三餐网格 -->
           <view class="meal-grid">
             <view class="meal-item done">
               <view class="meal-check green">✓</view>
@@ -238,7 +278,9 @@
               </view>
             </view>
             <view class="meal-item">
-              <view class="meal-check pending"><view class="meal-pending-dot"></view></view>
+              <view class="meal-check pending">
+                <view class="meal-pending-dot"></view>
+              </view>
               <text class="meal-label">中 食</text>
               <view class="meal-value-row">
                 <text class="meal-num">{{dailyCare.middle_g}}</text>
@@ -246,7 +288,9 @@
               </view>
             </view>
             <view class="meal-item">
-              <view class="meal-check pending"><view class="meal-pending-dot"></view></view>
+              <view class="meal-check pending">
+                <view class="meal-pending-dot"></view>
+              </view>
               <text class="meal-label">蔬 食</text>
               <view class="meal-value-row">
                 <text class="meal-num">{{dailyCare.veggie_g}}</text>
@@ -256,10 +300,10 @@
           </view>
         </view>
 
-        <!-- 散步指令 -->
+        <!-- 运动指令 -->
         <view class="exercise-bar">
           <view class="exercise-left">
-            <view class="exercise-icon">🐾</view>
+            <view class="exercise-icon">📊</view>
             <view class="exercise-text">
               <text class="exercise-title">餐后散步指令</text>
               <text class="exercise-desc">{{dailyCare.walk_plan_name || '15-20 分钟 · 保持轻度活动'}}</text>
@@ -268,12 +312,14 @@
           <text class="exercise-tag">{{dailyCare.walk_completed ? '已完成 ✓' : '消化养护'}}</text>
         </view>
 
-        <!-- 饮水 -->
+        <!-- 饮水舱 -->
         <view class="water-panel">
           <view class="water-glow"></view>
           <view class="water-top">
             <view class="water-info">
-              <view class="water-icon-wrap"><text class="water-icon">💧</text></view>
+              <view class="water-icon-wrap">
+                <text class="water-icon">💧</text>
+              </view>
               <view class="water-nums">
                 <text class="water-target">今日目标 {{waterTarget}}ml</text>
                 <view class="water-current-row">
@@ -286,6 +332,7 @@
               <text class="water-btn-text">+ 100ml</text>
             </view>
           </view>
+          <!-- 进度条 -->
           <view class="water-progress-bg">
             <view class="water-progress-fill" style="width: {{waterPercent}}%">
               <view class="water-shimmer"></view>
@@ -313,7 +360,60 @@
       </view>
     </view>
 
-    <!-- ========== 定制料程 ========== -->
+    <!-- ========== 品种风险锚点 ========== -->
+    <view class="breed-risk-card">
+      <view class="breed-risk-header">
+        <view class="breed-risk-icon-box">
+          <text class="breed-risk-icon">🧬</text>
+        </view>
+        <view class="breed-risk-title-wrap">
+          <text class="breed-risk-title">柯基品种风险锚点</text>
+          <text class="breed-risk-subtitle">BREED RISK PROFILE</text>
+        </view>
+      </view>
+      <view class="breed-risk-body">
+        <view class="breed-risk-item">
+          <view class="breed-risk-item-top">
+            <text class="breed-risk-item-name">代谢异常比例</text>
+            <text class="breed-risk-item-value">37.2%</text>
+          </view>
+          <view class="breed-risk-bar-bg">
+            <view class="breed-risk-bar-fill" style="width: 37.2%"></view>
+          </view>
+          <text class="breed-risk-item-desc">柯基犬中每 3 只就有 1 只存在代谢类指标异常</text>
+        </view>
+        <view class="breed-risk-divider"></view>
+        <view class="breed-risk-item">
+          <view class="breed-risk-item-top">
+            <text class="breed-risk-item-name">高风险部位</text>
+          </view>
+          <view class="breed-risk-tags">
+            <view class="breed-risk-tag danger">
+              <text class="breed-risk-tag-dot danger-dot"></text>
+              <text class="breed-risk-tag-text">脊椎/腰椎</text>
+            </view>
+            <view class="breed-risk-tag warning">
+              <text class="breed-risk-tag-dot warning-dot"></text>
+              <text class="breed-risk-tag-text">肾脏</text>
+            </view>
+            <view class="breed-risk-tag warning">
+              <text class="breed-risk-tag-dot warning-dot"></text>
+              <text class="breed-risk-tag-text">消化系统</text>
+            </view>
+            <view class="breed-risk-tag info">
+              <text class="breed-risk-tag-dot info-dot"></text>
+              <text class="breed-risk-tag-text">关节</text>
+            </view>
+          </view>
+          <text class="breed-risk-item-desc">肉丸的当前配方已针对肾脏与消化风险进行干预</text>
+        </view>
+      </view>
+      <view class="breed-risk-footer">
+        <text class="breed-risk-footer-text">数据来源：MPFD 品种数据库 · 12,840 只柯基样本</text>
+      </view>
+    </view>
+
+    <!-- ========== 定制旅程 ========== -->
     <view class="journey-card" bindtap="goJourneyDetail" wx:if="{{mealPlan}}">
       <view class="journey-header">
         <text class="journey-title">{{pet.name}}的专属定制旅程</text>
@@ -323,8 +423,11 @@
         </view>
       </view>
 
+      <!-- 4节点进度条 -->
       <view class="journey-progress">
-        <view class="journey-track"><view class="journey-track-fill"></view></view>
+        <view class="journey-track">
+          <view class="journey-track-fill"></view>
+        </view>
         <view class="journey-nodes">
           <view class="journey-node-item">
             <view class="journey-node done">🔬</view>
@@ -346,6 +449,7 @@
         </view>
       </view>
 
+      <!-- 数字孪生看板 -->
       <view class="live-panel" wx:if="{{mealPlan.is_live}}">
         <view class="live-glow"></view>
         <view class="live-top">
@@ -360,6 +464,11 @@
             <view class="live-red-dot"></view>
             <text class="live-badge-text">LIVE</text>
           </view>
+        </view>
+        <view class="live-desc-box">
+          <text class="live-desc">正在提取高纯度游离软骨素。</text>
+          <text class="live-desc-warn">因添加剂制备工艺复杂，为保证骨关节药效活性，本环节预计延长 12 小时。</text>
+          <text class="live-desc">系统已自动调整温控曲线。</text>
         </view>
         <view class="live-bottom">
           <view class="live-bottom-left">
@@ -391,13 +500,52 @@
       <view class="article-bg-shape"></view>
       <view class="article-content">
         <view class="article-head">
-          <view class="article-icon-box"><text class="article-icon">📖</text></view>
+          <view class="article-icon-box">
+            <text class="article-icon">📖</text>
+          </view>
           <text class="article-badge-text">📖 {{item.category || '报告深度解读'}}</text>
         </view>
         <text class="article-title">{{item.title}}</text>
+        <view class="article-body" wx:if="{{item.body}}">
+          <text class="article-para">{{item.body}}</text>
+          <view class="article-highlight" wx:if="{{item.highlight}}">
+            <text class="article-highlight-text">{{item.highlight}}</text>
+          </view>
+        </view>
         <view class="article-footer">
           <text class="article-author">妙巧巧·医学分析团队</text>
           <text class="article-read-more">阅读全文 ›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 社会证明 ========== -->
+    <view class="social-proof-card">
+      <text class="social-proof-title">已有众多犬主选择妙巧巧</text>
+      <view class="social-proof-grid">
+        <view class="social-proof-item">
+          <text class="social-proof-num">12,840</text>
+          <text class="social-proof-label">累计服务犬只</text>
+        </view>
+        <view class="social-proof-sep"></view>
+        <view class="social-proof-item">
+          <text class="social-proof-num">98.7%</text>
+          <text class="social-proof-label">主人满意度</text>
+        </view>
+        <view class="social-proof-sep"></view>
+        <view class="social-proof-item">
+          <text class="social-proof-num">63,200+</text>
+          <text class="social-proof-label">定制配方周期</text>
+        </view>
+      </view>
+      <view class="social-proof-reviews">
+        <view class="social-proof-review">
+          <text class="review-quote">"吃了3期后肾脏指标明显改善，太感动了"</text>
+          <text class="review-author">— 柯基·球球 主人</text>
+        </view>
+        <view class="social-proof-review">
+          <text class="review-quote">"再也不用自己算营养配比了，省心太多"</text>
+          <text class="review-author">— 金毛·大壮 主人</text>
         </view>
       </view>
     </view>
@@ -409,4 +557,5 @@
     </view>
   </view>
 
+  <!-- 底部使用原生 tabBar，无需自定义 -->
 </view>

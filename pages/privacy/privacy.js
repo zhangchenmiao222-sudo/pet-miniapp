@@ -1,1 +1,4 @@
-Page({ data: {}, onLoad() {} })
+Page({
+  data: {},
+  goBack() { wx.navigateBack() }
+})

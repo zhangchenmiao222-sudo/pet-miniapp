@@ -1,3 +1,61 @@
-<view class="page" style="background:#0F1923;min-height:100vh;padding:40rpx;color:#fff;">
-  <view style="font-size:32rpx;font-weight:bold;">页面建设中...</view>
+<view class="page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack"><text class="nav-back-icon">‹</text></view>
+    <text class="nav-title">用户隐私保护协议</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="content">
+    <text class="main-title">妙巧巧·MPFD 用户隐私保护协议</text>
+    <text class="update-date">更新日期：2026年3月23日</text>
+
+    <view class="section">
+      <text class="section-title">一、我们收集的信息</text>
+      <text class="paragraph">为了向您提供宠物养护管理服务，我们可能会收集以下信息：</text>
+      <text class="list-item">1. 微信登录信息：包括您的微信昵称、头像（经您授权后获取），用于创建和识别您的账户。</text>
+      <text class="list-item">2. 宠物信息：您主动录入的宠物名称、品种、年龄、体重、健康标签、体检报告等，用于生成个性化的营养方案和健康分析。</text>
+      <text class="list-item">3. 养护记录：每日喂食、饮水、散步等养护操作记录，用于追踪宠物日常健康状态。</text>
+      <text class="list-item">4. 支付信息：当您购买会员服务时，支付通过微信支付完成，我们仅记录订单号和会员到期时间，不存储您的银行卡等敏感支付信息。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">二、我们如何使用信息</text>
+      <text class="list-item">1. 为您的宠物生成个性化营养配方和健康分析报告。</text>
+      <text class="list-item">2. 记录和展示每日养护数据，帮助您追踪宠物健康变化。</text>
+      <text class="list-item">3. 提供会员服务及相关功能。</text>
+      <text class="list-item">4. 优化和改善我们的产品服务体验。</text>
+      <text class="paragraph">我们不会将您的个人信息用于与上述用途无关的其他目的。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">三、信息存储与保护</text>
+      <text class="list-item">1. 您的数据存储在经过安全认证的云服务器上，采用加密传输（HTTPS）。</text>
+      <text class="list-item">2. 我们采取合理的技术和管理措施保护您的个人信息安全，防止未授权访问、泄露或丢失。</text>
+      <text class="list-item">3. 仅授权的运营人员可在必要时访问后台管理系统中的数据。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">四、信息共享</text>
+      <text class="paragraph">我们不会向任何第三方出售、出租您的个人信息。除以下情况外，我们不会与第三方共享您的个人信息：</text>
+      <text class="list-item">1. 经您明确授权同意的。</text>
+      <text class="list-item">2. 根据法律法规要求或政府主管部门的要求提供的。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">五、您的权利</text>
+      <text class="list-item">1. 您可以随时查看、修改您的宠物信息和养护记录。</text>
+      <text class="list-item">2. 您可以要求我们删除您的账户及相关数据。</text>
+      <text class="list-item">3. 您可以选择不授权微信登录信息，但这可能影响部分功能的使用。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">六、联系我们</text>
+      <text class="paragraph">如您对本隐私协议有任何疑问，或需要行使您的数据权利，请通过以下方式联系我们：</text>
+      <text class="contact">邮箱：support@miaoqiaoqiao.com</text>
+    </view>
+
+    <view class="footer">
+      <text class="footer-text">妙巧巧·MPFD 精准宠物营养管理</text>
+    </view>
+  </view>
 </view>

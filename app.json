@@ -9,7 +9,8 @@
     "pages/medical-report/medical-report",
     "pages/meal-plan-detail/meal-plan-detail",
     "pages/article-detail/article-detail",
-    "pages/privacy/privacy"
+    "pages/privacy/privacy",
+    "pages/profile/profile"
   ],
   "window": {
     "backgroundTextStyle": "light",
