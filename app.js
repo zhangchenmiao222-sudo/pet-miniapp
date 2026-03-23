@@ -1,7 +1,7 @@
 App({
   globalData: {
     // 开发阶段用本地地址，部署后换成服务器地址
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://82.157.202.238:3003/api',
     token: ''
   },
 
