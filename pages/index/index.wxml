@@ -1,0 +1,556 @@
+<!-- 首页：完整还原 3-5 确定首页.jsx 设计 -->
+<view class="container">
+
+  <!-- ===================== 第一屏：英雄区 ===================== -->
+  <view class="hero-section">
+    <!-- 全屏背景图 -->
+    <image class="hero-bg" src="https://images.unsplash.com/photo-1544568100-847a948585b9?q=80&w=1000&auto=format&fit=crop" mode="aspectFill" />
+    <view class="hero-mask"></view>
+    <view class="hero-radial"></view>
+
+    <!-- 顶部品牌区 -->
+    <view class="brand-area">
+      <view class="brand-left">
+        <view class="brand-icon">
+          <text class="brand-icon-text">🔬</text>
+        </view>
+        <view class="brand-info">
+          <text class="brand-name">妙巧巧 · MPFD</text>
+          <view class="brand-tags">
+            <text class="brand-badge">国企品质 责任传承</text>
+            <text class="brand-en">Animal Precision Nutrition</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 宠物标签 -->
+    <view class="pet-tags">
+      <view class="pet-tag-pill">肉丸 · 128天</view>
+      <view class="pet-tag-id">NO. GF-2026-00005</view>
+    </view>
+
+    <!-- 宠物名称与信息 -->
+    <view class="pet-identity">
+      <!-- 分享按钮 -->
+      <view class="share-btn" bindtap="onShareCard">
+        <text class="share-btn-icon">↗</text>
+        <text class="share-btn-text">分享档案</text>
+      </view>
+      <text class="pet-name">肉丸</text>
+      <text class="pet-info">♂ 柯基 · 4.5岁 · 13.3kg</text>
+      <view class="pet-status">
+        <view class="status-pill">
+          <text class="status-icon">📊</text>
+          <text class="status-text">肾脏敏锐阶段 · 消化需护</text>
+        </view>
+      </view>
+      <view class="checkup-tag">
+        <text class="checkup-icon">🛡️</text>
+        <text class="checkup-text">最近体检：2026.02.11 · 14项指标检测完毕</text>
+      </view>
+    </view>
+
+    <!-- 报告→配方过渡引导文案 -->
+    <view class="transition-guide">
+      <view class="transition-line"></view>
+      <text class="transition-text">基于以上检测结果，我们为肉丸定制了专属营养方案 ↓</text>
+      <view class="transition-line"></view>
+    </view>
+
+    <!-- ========== 专属配方卡片 ========== -->
+    <view class="formula-card">
+      <!-- 血检定制原因说明 -->
+      <view class="formula-reason">
+        <text class="formula-reason-icon">🩸</text>
+        <text class="formula-reason-text">血检发现 KIM1(肾损伤标志物) 偏高、GAS(胃泌素) 偏低，需低磷饮食保护肾脏并促进消化功能恢复</text>
+      </view>
+      <!-- 标题 -->
+      <view class="formula-header">
+        <view class="formula-label-row">
+          <text class="formula-label">专属配方</text>
+          <view class="formula-dot"></view>
+          <text class="formula-label">第5期</text>
+        </view>
+        <text class="formula-title">「低磷护肾·易消化膳」</text>
+      </view>
+
+      <!-- 核心目标 -->
+      <view class="formula-goal">
+        <text class="formula-goal-text">核心目标：磷≤0.5%DM · 提升胃泌素</text>
+        <text class="formula-goal-icon">📈</text>
+      </view>
+
+      <!-- 图文混排 -->
+      <view class="formula-content">
+        <!-- 左侧实拍图 -->
+        <view class="formula-img-wrap">
+          <image class="formula-img" src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?q=80&w=400&h=400&auto=format&fit=crop" mode="aspectFill" />
+          <view class="formula-img-badge">
+            <text class="formula-img-badge-icon">📷</text>
+            <text class="formula-img-badge-text">实拍</text>
+          </view>
+        </view>
+
+        <!-- 右侧配料 -->
+        <view class="formula-details">
+          <view class="formula-detail-item">
+            <view class="detail-icon-wrap red">
+              <text class="detail-emoji">🥩</text>
+            </view>
+            <view class="detail-text">
+              <text class="detail-label">蛋白组合</text>
+              <text class="detail-value">鸡胸肉·鳕鱼·鸭胸肉</text>
+            </view>
+          </view>
+          <view class="formula-detail-item">
+            <view class="detail-icon-wrap yellow">
+              <text class="detail-emoji">💊</text>
+            </view>
+            <view class="detail-text">
+              <text class="detail-label">特调补充</text>
+              <text class="detail-value">Omega-3·牛磺酸</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 底部营养配比 -->
+      <view class="formula-footer">
+        <view class="formula-nutrients">
+          <text class="nutrient-text">蛋白质 29%</text>
+          <view class="nutrient-sep"></view>
+          <text class="nutrient-text">脂肪 14%</text>
+          <view class="nutrient-sep"></view>
+          <text class="nutrient-text">90千卡/100g</text>
+        </view>
+        <text class="formula-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===================== 第二屏：功能区 ===================== -->
+  <view class="function-area">
+
+    <!-- ========== 医学综合分析报告 ========== -->
+    <view class="report-card">
+      <!-- 情感文案 -->
+      <view class="emotion-banner">
+        <text class="emotion-text">每一项指标背后，都是我们对肉丸健康的深度守护</text>
+      </view>
+      <!-- 深色头部 -->
+      <view class="report-header">
+        <view class="report-header-bg">🔬</view>
+        <view class="report-header-content">
+          <view class="report-header-left">
+            <view class="report-badges">
+              <text class="report-badge-id">No. 00005</text>
+              <text class="report-badge-verified">Verified</text>
+            </view>
+            <text class="report-title">医学综合分析报告</text>
+            <text class="report-subtitle">15页深度解析 · 涵盖6大生理系统</text>
+          </view>
+          <view class="report-icon-box">
+            <text class="report-icon-text">📄</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 白色内容区 -->
+      <view class="report-body">
+        <view class="report-inner-card">
+          <!-- 标题行 -->
+          <view class="radar-title-row">
+            <text class="radar-title">全系统多维健康透析画像</text>
+            <text class="radar-badge">14项核心指标</text>
+          </view>
+
+          <!-- SVG雷达图（用 canvas 或 view 模拟） -->
+          <view class="radar-chart-wrap">
+            <!-- 外围标签 -->
+            <text class="radar-label top">代谢系统</text>
+            <text class="radar-label top-right">心血管</text>
+            <text class="radar-label bottom-right red">肾脏(干预)</text>
+            <text class="radar-label bottom red">消化系统</text>
+            <text class="radar-label bottom-left">免疫</text>
+            <text class="radar-label top-left">骨骼肌肉</text>
+            <!-- 占位图区域 - 用 canvas 绘制雷达图 -->
+            <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
+          </view>
+
+          <!-- 结论清单 -->
+          <view class="conclusion-list">
+            <view class="conclusion-item">
+              <view class="conclusion-icon green">✓</view>
+              <view class="conclusion-text">
+                <text class="conclusion-title">卓越健康指标</text>
+                <text class="conclusion-desc">心血管及免疫系统表现优异</text>
+              </view>
+              <view class="conclusion-count">
+                <text class="count-num green">7</text>
+                <text class="count-unit">项</text>
+              </view>
+            </view>
+
+            <view class="conclusion-item">
+              <view class="conclusion-icon amber">⚠</view>
+              <view class="conclusion-text">
+                <text class="conclusion-title">黄金观察期</text>
+                <text class="conclusion-desc">代谢指标微小波动，已纳入监控</text>
+              </view>
+              <view class="conclusion-count">
+                <text class="count-num amber">5</text>
+                <text class="count-unit">项</text>
+              </view>
+            </view>
+
+            <view class="conclusion-item">
+              <view class="conclusion-icon blue">⚗</view>
+              <view class="conclusion-text">
+                <text class="conclusion-title">专属营养干预中</text>
+                <text class="conclusion-desc-blue">针对性方案已生效执行</text>
+              </view>
+              <view class="conclusion-count">
+                <text class="count-num blue">2</text>
+                <text class="count-unit">项</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 查阅报告按钮 -->
+        <view class="report-btn">
+          <text class="report-btn-icon">📄</text>
+          <text class="report-btn-text">查阅 15 页完整分析报告</text>
+          <text class="report-btn-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 今日养护看板 ========== -->
+    <view class="care-card">
+      <view class="care-bg-circle"></view>
+      <view class="care-content">
+        <!-- 头部 -->
+        <view class="care-header">
+          <view class="care-header-left">
+            <view class="care-icon-box">
+              <text class="care-icon-text">⚖️</text>
+            </view>
+            <view class="care-title-wrap">
+              <text class="care-title">今日养护看板</text>
+              <text class="care-subtitle">第 4 期 · 第 23 天 (倒数第2天)</text>
+            </view>
+          </view>
+          <view class="care-status-tag">精准执行中</view>
+        </view>
+
+        <!-- 总食量与三餐 -->
+        <view class="meal-section">
+          <view class="meal-total-row">
+            <view class="meal-total-left">
+              <view class="meal-dot"></view>
+              <text class="meal-total-label">今日总食量：</text>
+              <text class="meal-total-num">683</text>
+              <text class="meal-total-unit">g</text>
+            </view>
+            <text class="meal-count-tag">分 3 餐</text>
+          </view>
+
+          <!-- 三餐网格 -->
+          <view class="meal-grid">
+            <view class="meal-item done">
+              <view class="meal-check green">✓</view>
+              <text class="meal-label">早 餐</text>
+              <view class="meal-value-row">
+                <text class="meal-num">228</text>
+                <text class="meal-unit">g</text>
+              </view>
+            </view>
+            <view class="meal-item">
+              <view class="meal-check pending">
+                <view class="meal-pending-dot"></view>
+              </view>
+              <text class="meal-label">中 餐</text>
+              <view class="meal-value-row">
+                <text class="meal-num">228</text>
+                <text class="meal-unit">g</text>
+              </view>
+            </view>
+            <view class="meal-item">
+              <view class="meal-check pending">
+                <view class="meal-pending-dot"></view>
+              </view>
+              <text class="meal-label">晚 餐</text>
+              <view class="meal-value-row">
+                <text class="meal-num">227</text>
+                <text class="meal-unit">g</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 运动指令 -->
+        <view class="exercise-bar">
+          <view class="exercise-left">
+            <view class="exercise-icon">📊</view>
+            <view class="exercise-text">
+              <text class="exercise-title">餐后散步指令</text>
+              <text class="exercise-desc">15-20 分钟 · 保持轻度活动</text>
+            </view>
+          </view>
+          <text class="exercise-tag">消化养护</text>
+        </view>
+
+        <!-- 饮水舱 -->
+        <view class="water-panel">
+          <view class="water-glow"></view>
+          <view class="water-top">
+            <view class="water-info">
+              <view class="water-icon-wrap">
+                <text class="water-icon">💧</text>
+              </view>
+              <view class="water-nums">
+                <text class="water-target">今日目标 1060ml</text>
+                <view class="water-current-row">
+                  <text class="water-current">{{waterIntake}}</text>
+                  <text class="water-ml">ml</text>
+                </view>
+              </view>
+            </view>
+            <view class="water-btn {{waterIntake >= 1060 ? 'disabled' : ''}}" bindtap="addWater">
+              <text class="water-btn-text">+ 100ml</text>
+            </view>
+          </view>
+          <!-- 进度条 -->
+          <view class="water-progress-bg">
+            <view class="water-progress-fill" style="width: {{waterPercent}}%">
+              <view class="water-shimmer"></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 额外记录 -->
+        <view class="extra-section">
+          <view class="extra-header">
+            <text class="extra-title">📝 今日额外记录</text>
+            <text class="extra-link">查看全部 ›</text>
+          </view>
+          <view class="extra-tags">
+            <view class="extra-tag">
+              <text class="extra-tag-icon">🦴</text>
+              <text class="extra-tag-text">鸡胸肉条 </text>
+              <text class="extra-tag-value">30g</text>
+            </view>
+            <view class="extra-tag">
+              <text class="extra-tag-icon">🥚</text>
+              <text class="extra-tag-text">蛋黄 </text>
+              <text class="extra-tag-value">半个</text>
+            </view>
+          </view>
+          <view class="add-record-btn">
+            <text class="add-record-text">+ [ 添加记录 ]</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 品种风险锚点 ========== -->
+    <view class="breed-risk-card">
+      <view class="breed-risk-header">
+        <view class="breed-risk-icon-box">
+          <text class="breed-risk-icon">🧬</text>
+        </view>
+        <view class="breed-risk-title-wrap">
+          <text class="breed-risk-title">柯基品种风险锚点</text>
+          <text class="breed-risk-subtitle">BREED RISK PROFILE</text>
+        </view>
+      </view>
+      <view class="breed-risk-body">
+        <view class="breed-risk-item">
+          <view class="breed-risk-item-top">
+            <text class="breed-risk-item-name">代谢异常比例</text>
+            <text class="breed-risk-item-value">37.2%</text>
+          </view>
+          <view class="breed-risk-bar-bg">
+            <view class="breed-risk-bar-fill" style="width: 37.2%"></view>
+          </view>
+          <text class="breed-risk-item-desc">柯基犬中每 3 只就有 1 只存在代谢类指标异常</text>
+        </view>
+        <view class="breed-risk-divider"></view>
+        <view class="breed-risk-item">
+          <view class="breed-risk-item-top">
+            <text class="breed-risk-item-name">高风险部位</text>
+          </view>
+          <view class="breed-risk-tags">
+            <view class="breed-risk-tag danger">
+              <text class="breed-risk-tag-dot danger-dot"></text>
+              <text class="breed-risk-tag-text">脊椎/腰椎</text>
+            </view>
+            <view class="breed-risk-tag warning">
+              <text class="breed-risk-tag-dot warning-dot"></text>
+              <text class="breed-risk-tag-text">肾脏</text>
+            </view>
+            <view class="breed-risk-tag warning">
+              <text class="breed-risk-tag-dot warning-dot"></text>
+              <text class="breed-risk-tag-text">消化系统</text>
+            </view>
+            <view class="breed-risk-tag info">
+              <text class="breed-risk-tag-dot info-dot"></text>
+              <text class="breed-risk-tag-text">关节</text>
+            </view>
+          </view>
+          <text class="breed-risk-item-desc">肉丸的当前配方已针对肾脏与消化风险进行干预</text>
+        </view>
+      </view>
+      <view class="breed-risk-footer">
+        <text class="breed-risk-footer-text">数据来源：MPFD 品种数据库 · 12,840 只柯基样本</text>
+      </view>
+    </view>
+
+    <!-- ========== 定制旅程 ========== -->
+    <view class="journey-card" bindtap="goJourneyDetail">
+      <view class="journey-header">
+        <text class="journey-title">肉丸的专属定制旅程</text>
+        <view class="journey-live-tag">
+          <view class="journey-live-dot {{pulse ? 'on' : ''}}"></view>
+          <text class="journey-live-text">定制进行中</text>
+        </view>
+      </view>
+
+      <!-- 4节点进度条 -->
+      <view class="journey-progress">
+        <view class="journey-track">
+          <view class="journey-track-fill"></view>
+        </view>
+        <view class="journey-nodes">
+          <view class="journey-node-item">
+            <view class="journey-node done">🔬</view>
+            <text class="journey-node-label done-label">检测出具</text>
+          </view>
+          <view class="journey-node-item">
+            <view class="journey-node done">🤖</view>
+            <text class="journey-node-label done-label">配方生成</text>
+          </view>
+          <view class="journey-node-item">
+            <view class="journey-node active">🔥</view>
+            <view class="journey-node-ping"></view>
+            <text class="journey-node-label active-label">备料生产</text>
+          </view>
+          <view class="journey-node-item">
+            <view class="journey-node pending-node">🚚</view>
+            <text class="journey-node-label pending-label">新鲜送达</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 数字孪生看板 -->
+      <view class="live-panel">
+        <view class="live-glow"></view>
+        <view class="live-top">
+          <view class="live-top-left">
+            <view class="live-flask-icon">⚗️</view>
+            <view class="live-top-text">
+              <text class="live-process-label">Live Process</text>
+              <text class="live-process-title">特殊添加剂准备中</text>
+            </view>
+          </view>
+          <view class="live-badge">
+            <view class="live-red-dot"></view>
+            <text class="live-badge-text">LIVE</text>
+          </view>
+        </view>
+        <view class="live-desc-box">
+          <text class="live-desc">正在提取高纯度游离软骨素。</text>
+          <text class="live-desc-warn">因添加剂制备工艺复杂，为保证骨关节药效活性，本环节预计延长 12 小时。</text>
+          <text class="live-desc">系统已自动调整温控曲线。</text>
+        </view>
+        <view class="live-bottom">
+          <view class="live-bottom-left">
+            <view class="live-emoji-stack">
+              <text class="live-emoji-item">🥩</text>
+              <text class="live-emoji-item overlap">💊</text>
+            </view>
+            <text class="live-progress-label">备料进度</text>
+          </view>
+          <view class="live-progress-wrap">
+            <view class="live-progress-bg">
+              <view class="live-progress-fill"></view>
+            </view>
+            <text class="live-progress-num">65%</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="journey-footer">
+        <text class="journey-footer-text">累计定制 <text class="journey-footer-bold">15</text> 个专属营养周期</text>
+        <view class="journey-footer-link">
+          <text class="journey-footer-link-text">查看详细日志 ›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 科普文章 ========== -->
+    <view class="article-card">
+      <view class="article-bg-shape"></view>
+      <view class="article-content">
+        <view class="article-head">
+          <view class="article-icon-box">
+            <text class="article-icon">📖</text>
+          </view>
+          <text class="article-badge-text">📖 报告深度解读</text>
+        </view>
+        <text class="article-title">为什么说同型半胱氨酸是\n血管的"磨损指示器"？</text>
+        <view class="article-body">
+          <text class="article-para">它是蛋白质代谢的副产物。如果在血液中堆积过多，就像砂纸一样慢慢磨损血管内壁，增加心血管风险。</text>
+          <view class="article-highlight">
+            <text class="article-highlight-text">肉丸的该指标处于黄金观察期。当前配方已通过补充B族维生素介入调理，精准守护心血管。</text>
+          </view>
+        </view>
+        <view class="article-footer">
+          <text class="article-author">妙巧巧·医学分析团队</text>
+          <text class="article-read-more">阅读全文 ›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 社会证明 ========== -->
+    <view class="social-proof-card">
+      <text class="social-proof-title">已有众多犬主选择妙巧巧</text>
+      <view class="social-proof-grid">
+        <view class="social-proof-item">
+          <text class="social-proof-num">12,840</text>
+          <text class="social-proof-label">累计服务犬只</text>
+        </view>
+        <view class="social-proof-sep"></view>
+        <view class="social-proof-item">
+          <text class="social-proof-num">98.7%</text>
+          <text class="social-proof-label">主人满意度</text>
+        </view>
+        <view class="social-proof-sep"></view>
+        <view class="social-proof-item">
+          <text class="social-proof-num">63,200+</text>
+          <text class="social-proof-label">定制配方周期</text>
+        </view>
+      </view>
+      <view class="social-proof-reviews">
+        <view class="social-proof-review">
+          <text class="review-quote">"吃了3期后肾脏指标明显改善，太感动了"</text>
+          <text class="review-author">— 柯基·球球 主人</text>
+        </view>
+        <view class="social-proof-review">
+          <text class="review-quote">"再也不用自己算营养配比了，省心太多"</text>
+          <text class="review-author">— 金毛·大壮 主人</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部说明 -->
+    <view class="footer-note">
+      <text class="footer-note-text">每只犬的配方均不相同 · 配方基于血液检测报告自动生成</text>
+      <text class="footer-note-sub">动物精准营养及预防医学中心提供技术支持</text>
+    </view>
+  </view>
+
+  <!-- 底部使用原生 tabBar，无需自定义 -->
+</view>

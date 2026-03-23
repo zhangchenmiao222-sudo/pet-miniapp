@@ -1,0 +1,207 @@
+<!-- 专属定制旅程详情页 -->
+<view class="container">
+
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">肉丸的专属定制旅程</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <view class="content-area">
+    <!-- 顶部状态卡片 -->
+    <view class="status-card">
+      <view class="status-bg-icon">🔬</view>
+      <view class="status-glow"></view>
+      <view class="status-content">
+        <view class="status-live-row">
+          <view class="status-live-dot"></view>
+          <text class="status-live-label">Live Status</text>
+        </view>
+        <text class="status-title">备料生产进行中</text>
+        <text class="status-desc">第5期「低磷护肾·易消化膳」已进入核心备料环节。为保证软骨素及Omega-3药效活性，当前处于温控缓释制备阶段。</text>
+      </view>
+    </view>
+
+    <!-- 时间轴 -->
+    <view class="timeline">
+
+      <!-- 1. 检测出具 (已完成) -->
+      <view class="timeline-item">
+        <view class="timeline-dot green-dot">✓</view>
+        <view class="timeline-body">
+          <view class="timeline-title-row">
+            <text class="timeline-title">检测出具</text>
+            <text class="timeline-tag done-tag">已完成</text>
+          </view>
+          <view class="timeline-steps">
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot green"></view>
+                <view class="step-line"></view>
+              </view>
+              <view class="step-content">
+                <text class="step-title">冷链交付与入库</text>
+                <text class="step-desc">顺丰冷链已将肉丸的血液样本安全送达国家重点实验室。经质检，样本完整度与生化活性 100% 达标。</text>
+              </view>
+            </view>
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot green"></view>
+              </view>
+              <view class="step-content">
+                <text class="step-title">14项核心指标透析</text>
+                <text class="step-desc">进入高精度 ELISA 检测环节。历时 15 天的深度检测与数据复核已完毕，您的专属医学分析报告现已生成。</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 2. 样本寄送 (已完成) -->
+      <view class="timeline-item">
+        <view class="timeline-dot green-dot">✓</view>
+        <view class="timeline-body">
+          <view class="timeline-title-row">
+            <text class="timeline-title">样本寄送</text>
+            <text class="timeline-tag done-tag">已完成</text>
+          </view>
+          <view class="timeline-steps">
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot green"></view>
+              </view>
+              <view class="step-content">
+                <text class="step-title">冷链交付与入库</text>
+                <text class="step-desc">顺丰冷链已将肉丸的血液样本安全送达国家重点实验室。经质检，样本完整度与生化活性 100% 达标。</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 3. 检测出具 (已完成) -->
+      <view class="timeline-item">
+        <view class="timeline-dot green-dot">✓</view>
+        <view class="timeline-body">
+          <view class="timeline-title-row">
+            <text class="timeline-title">检测出具</text>
+            <text class="timeline-tag done-tag">已完成</text>
+          </view>
+          <view class="timeline-steps">
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot green"></view>
+              </view>
+              <view class="step-content">
+                <text class="step-title">14项核心指标透析</text>
+                <text class="step-desc">进入高精度 ELISA 检测环节。历时 15 天的深度检测与数据复核已完毕，您的专属医学分析报告现已生成。</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 4. 配方生成 (已完成) -->
+      <view class="timeline-item">
+        <view class="timeline-dot green-dot">✓</view>
+        <view class="timeline-body">
+          <view class="timeline-title-row">
+            <text class="timeline-title">配方生成</text>
+            <text class="timeline-tag done-tag">已完成</text>
+          </view>
+          <view class="timeline-steps">
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot green"></view>
+              </view>
+              <view class="step-content">
+                <text class="step-title">AI 医疗级营养演算</text>
+                <text class="step-desc">基于 KIM1(肾损伤) 及 GAS(胃泌素) 指标偏离，AI 已精准计算出「低磷护肾+易消化」的最佳食材组合。</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 5. 备料生产 (进行中) -->
+      <view class="timeline-item active-item">
+        <view class="timeline-dot-ping"></view>
+        <view class="timeline-dot blue-dot">🔥</view>
+        <view class="timeline-body">
+          <view class="timeline-title-row">
+            <text class="timeline-title active-title">备料生产</text>
+            <text class="timeline-tag active-tag">进行中</text>
+          </view>
+          <view class="timeline-steps">
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot blue pulse-dot"></view>
+                <view class="step-line blue-line"></view>
+              </view>
+              <view class="step-content active-step-content">
+                <view class="active-step-header">
+                  <text class="active-step-icon">▶</text>
+                  <text class="active-step-title">特殊添加剂制备</text>
+                </view>
+                <text class="active-step-desc">正在提取高纯度游离软骨素与Omega-3。</text>
+                <text class="active-step-warn">因特殊制备工艺复杂，为保证活性，本环节用时预计延长12小时</text>
+                <text class="active-step-desc">，请耐心等待。</text>
+
+                <!-- 数字看板 -->
+                <view class="live-log-panel">
+                  <view class="log-header">
+                    <text class="log-sys">System.Log_</text>
+                    <view class="log-live">
+                      <view class="log-live-dot"></view>
+                      <text class="log-live-text">LIVE</text>
+                    </view>
+                  </view>
+                  <view class="log-entries">
+                    <view class="log-entry done-entry">
+                      <text class="log-time">[10:42:01] 鸭胸肉破壁处理完成</text>
+                      <text class="log-check">✓</text>
+                    </view>
+                    <view class="log-entry current-entry">
+                      <text class="log-time">[10:45:33] 软骨素温控提取中...</text>
+                      <text class="log-wait">⏳</text>
+                    </view>
+                    <view class="log-entry waiting-entry">
+                      <text class="log-time">[WAITING] 恒温熟化程序</text>
+                      <text class="log-dash">--</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 6. 新鲜送达 (待启动) -->
+      <view class="timeline-item">
+        <view class="timeline-dot gray-dot">🚚</view>
+        <view class="timeline-body">
+          <view class="timeline-title-row">
+            <text class="timeline-title gray-title">新鲜送达</text>
+            <text class="timeline-tag pending-tag">待启动</text>
+          </view>
+          <view class="timeline-steps">
+            <view class="step-item">
+              <view class="step-dot-col">
+                <view class="step-dot gray"></view>
+              </view>
+              <view class="step-content">
+                <text class="step-title gray-text">航天级冷链派送</text>
+                <text class="step-desc gray-text">生产及无菌检测完成后，将立即由顺丰冷链发出，全程 0-4℃ 锁鲜送达您的手中。</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+</view>

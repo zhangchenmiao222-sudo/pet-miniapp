@@ -1,0 +1,329 @@
+<!-- 训练页 - 第二个 Tab -->
+<view class="container">
+
+  <!-- ===================== 第一屏：英雄区 ===================== -->
+  <view class="hero-section">
+    <image class="hero-bg" src="https://images.unsplash.com/photo-1544568100-847a948585b9?q=80&w=1000&auto=format&fit=crop" mode="aspectFill" />
+    <view class="hero-mask"></view>
+    <view class="hero-radial"></view>
+
+    <!-- 顶部操作栏 -->
+    <view class="top-bar">
+      <view class="top-back" bindtap="goBack">
+        <text class="top-back-icon">‹</text>
+      </view>
+      <view class="top-right">
+        <view class="avatar-pill">
+          <text class="avatar-emoji">🐾</text>
+          <text class="avatar-name">肉丸</text>
+        </view>
+        <view class="avatar-pill">
+          <text class="avatar-emoji">🐕</text>
+          <text class="avatar-name">Tank</text>
+        </view>
+        <view class="top-more">···</view>
+      </view>
+    </view>
+
+    <!-- FOCUS MODE 标签 -->
+    <view class="focus-area">
+      <view class="focus-tags">
+        <view class="focus-tag">
+          <view class="focus-dot"></view>
+          <text class="focus-tag-text">FOCUS MODE</text>
+        </view>
+        <text class="focus-class">K9·CLASS·A</text>
+      </view>
+      <text class="focus-subtitle">TRAINING DAY</text>
+    </view>
+
+    <!-- 犬名 + 天数 -->
+    <view class="hero-identity">
+      <view class="hero-name-row">
+        <text class="hero-name">肉丸</text>
+        <text class="hero-day">42</text>
+      </view>
+      <view class="hero-meta">
+        <text class="hero-meta-icon">◉</text>
+        <text class="hero-meta-text">系统化基础服从训练犬</text>
+      </view>
+      <view class="hero-stats">
+        <text class="hero-stat">◉ 本周科目 5/6</text>
+        <text class="hero-stat-sep">·</text>
+        <text class="hero-stat">◉ 评定倒数: 3 天</text>
+      </view>
+    </view>
+
+    <!-- 当前阶段 -->
+    <view class="phase-bar">
+      <view class="phase-pill">
+        <text class="phase-label">CURRENT PHASE</text>
+        <text class="phase-name">无绳随行与散放</text>
+      </view>
+      <view class="phase-today-btn">
+        <text class="phase-today-icon">◎</text>
+        <text class="phase-today-text">今日达标</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===================== 第二屏：功能区 ===================== -->
+  <view class="function-area">
+
+    <!-- ========== 今日重点 ========== -->
+    <view class="focus-card">
+      <view class="focus-header">
+        <view class="focus-header-left">
+          <view class="focus-header-dot"></view>
+          <text class="focus-header-title">今日重点：无绳随行抗干扰</text>
+        </view>
+        <view class="focus-progress-tag">
+          <text class="focus-progress-text">2/3</text>
+          <text class="focus-progress-label">已完成</text>
+        </view>
+      </view>
+      <view class="focus-warning">
+        <text class="focus-warning-icon">⚠</text>
+        <text class="focus-warning-label">当前瓶颈：</text>
+        <text class="focus-warning-text">放牧归召响应速度略有迟疑，需强化。</text>
+      </view>
+    </view>
+
+    <!-- ========== 4模块网格 ========== -->
+    <view class="module-grid">
+      <view class="module-item">
+        <view class="module-icon-wrap">
+          <text class="module-icon">📋</text>
+        </view>
+        <text class="module-title">训练日志</text>
+        <text class="module-desc">排餐与训练记录</text>
+      </view>
+      <view class="module-item">
+        <view class="module-icon-wrap">
+          <text class="module-icon">🎯</text>
+        </view>
+        <text class="module-title">专项强化</text>
+        <text class="module-desc">兴奋度 / 抑制力</text>
+      </view>
+      <view class="module-item">
+        <view class="module-icon-wrap">
+          <text class="module-icon">▶</text>
+        </view>
+        <text class="module-title">视频归档</text>
+        <text class="module-desc">本期动作专辑区</text>
+      </view>
+      <view class="module-item">
+        <view class="module-icon-wrap">
+          <text class="module-icon">📊</text>
+        </view>
+        <text class="module-title">综合进度</text>
+        <text class="module-desc-link">能力雷达与达标率</text>
+      </view>
+    </view>
+
+    <!-- ========== 最新训练快照 ========== -->
+    <view class="snapshot-card">
+      <view class="snapshot-header">
+        <view class="snapshot-header-left">
+          <text class="snapshot-clock">🕐</text>
+          <text class="snapshot-title">最新训练快照</text>
+        </view>
+        <view class="snapshot-header-right">
+          <text class="snapshot-time">今天 14:30</text>
+          <text class="snapshot-link">去回顾</text>
+        </view>
+      </view>
+
+      <view class="snapshot-body">
+        <view class="snapshot-row">
+          <text class="snapshot-label">训练科目</text>
+          <text class="snapshot-value">无绳随行与散放</text>
+        </view>
+        <view class="snapshot-divider"></view>
+        <view class="snapshot-row">
+          <text class="snapshot-label">表现摘要</text>
+          <text class="snapshot-value">抗干扰表现稳定，远距离召回响应慢，不掉链子。</text>
+        </view>
+        <view class="snapshot-divider"></view>
+        <view class="snapshot-note">
+          <text class="snapshot-note-label">导师备注：</text>
+          <text class="snapshot-note-text">建议在后续动作中加入更高频的口哨引导，必须继续强化口令响应的绝对预期时间。</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 训练成长轨迹 ========== -->
+    <view class="growth-card">
+      <view class="growth-header">
+        <view class="growth-header-left">
+          <text class="growth-title">训练成长轨迹</text>
+          <text class="growth-en">GROWTH TIMELINE</text>
+        </view>
+        <text class="growth-link">完整记录</text>
+      </view>
+
+      <!-- 时间线 -->
+      <view class="growth-timeline">
+        <!-- 节点1 -->
+        <view class="growth-item">
+          <view class="growth-dot-col">
+            <view class="growth-dot small"></view>
+            <view class="growth-line"></view>
+          </view>
+          <view class="growth-item-content">
+            <text class="growth-item-title">环境适应与脱敏</text>
+            <text class="growth-item-date">Day 1-14</text>
+          </view>
+        </view>
+
+        <!-- 节点2 -->
+        <view class="growth-item">
+          <view class="growth-dot-col">
+            <view class="growth-dot small"></view>
+            <view class="growth-line"></view>
+          </view>
+          <view class="growth-item-content">
+            <text class="growth-item-title">有绳基础服从</text>
+            <text class="growth-item-date">Day 15-30</text>
+          </view>
+        </view>
+
+        <!-- 节点3 - 活跃 -->
+        <view class="growth-item active-growth">
+          <view class="growth-dot-col">
+            <view class="growth-dot large active-dot"></view>
+            <view class="growth-line"></view>
+          </view>
+          <view class="growth-active-panel">
+            <view class="growth-active-header">
+              <text class="growth-active-title">无绳随行与散放</text>
+              <view class="growth-live-badge">
+                <text class="growth-live-icon">◉</text>
+                <text class="growth-live-text">LIVE 进行中</text>
+              </view>
+            </view>
+            <text class="growth-active-desc">正在攻坚：远距离召回及无绳抗干扰训练。</text>
+            <view class="growth-active-focus">
+              <text class="growth-active-focus-label">重点：</text>
+              <text class="growth-active-focus-text">当前兴奋度控制为核心攻克难项。</text>
+            </view>
+            <view class="growth-progress-row">
+              <text class="growth-progress-label">STAGE PROGRESS</text>
+              <view class="growth-progress-bar">
+                <view class="growth-progress-fill" style="width: 65%"></view>
+              </view>
+              <text class="growth-progress-num">65%</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 节点4 - 待解锁 -->
+        <view class="growth-item">
+          <view class="growth-dot-col">
+            <view class="growth-dot small gray-dot"></view>
+          </view>
+          <view class="growth-item-content">
+            <text class="growth-item-title gray-text">实战场景考核</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 核心能力画像 ========== -->
+    <view class="ability-card">
+      <view class="ability-header">
+        <text class="ability-icon">📐</text>
+        <view class="ability-header-text">
+          <text class="ability-title">核心能力画像</text>
+          <text class="ability-en">K9 ATTRIBUTES</text>
+        </view>
+      </view>
+
+      <view class="ability-list">
+        <!-- 服从与专注力 -->
+        <view class="ability-item">
+          <view class="ability-item-left">
+            <text class="ability-item-name">服从与专注力</text>
+            <text class="ability-item-desc">指令响应 &lt; 1.5s，抗干扰无偏离</text>
+          </view>
+          <view class="ability-item-right">
+            <text class="ability-change up">↗较上周 +4</text>
+            <text class="ability-score">92</text>
+          </view>
+        </view>
+
+        <view class="ability-divider"></view>
+
+        <!-- 兴奋度与猎取动力 -->
+        <view class="ability-item">
+          <view class="ability-item-left">
+            <text class="ability-item-name">兴奋度与猎取动力</text>
+            <text class="ability-item-desc">动力饱满，需继续强化"安定口令"控制</text>
+          </view>
+          <view class="ability-item-right">
+            <text class="ability-change stable">一般保持</text>
+            <text class="ability-score">85</text>
+          </view>
+        </view>
+
+        <view class="ability-divider"></view>
+
+        <!-- 环境适应性 -->
+        <view class="ability-item">
+          <view class="ability-item-left">
+            <text class="ability-item-name">环境适应性</text>
+            <text class="ability-item-desc">对复杂场地及噪音创绝性反应极轻微</text>
+          </view>
+          <view class="ability-item-right">
+            <text class="ability-change up">↗较上周 +1</text>
+            <text class="ability-score">98</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 阶段性评定成果 ========== -->
+    <view class="eval-card">
+      <view class="eval-top-row">
+        <view class="eval-badges">
+          <text class="eval-phase-badge">PHASE 1</text>
+          <text class="eval-cleared-badge">CLEARED</text>
+        </view>
+        <view class="eval-grade">
+          <text class="eval-grade-text">S-</text>
+        </view>
+      </view>
+
+      <text class="eval-title">阶段性评定成果</text>
+      <text class="eval-subtitle">基础科目已通过认证</text>
+
+      <view class="eval-mentor">
+        <text class="eval-mentor-label">导师看法：</text>
+        <text class="eval-mentor-text">服从基础已牢固，展现出极高的受训潜能。主从默契度已初见成效。</text>
+      </view>
+
+      <view class="eval-next">
+        <view class="eval-next-header">
+          <text class="eval-next-icon">◎</text>
+          <text class="eval-next-label">NEXT PHASE TARGET</text>
+          <text class="eval-next-time">预计开始: 7天</text>
+        </view>
+        <text class="eval-next-title">进入复杂场景下的无绳抗干扰训练</text>
+        <text class="eval-next-desc">训练方向：提升在商圈、多犬环境中的远距离召回隐藏性与特殊场景搜索等复合指令执行。</text>
+      </view>
+
+      <view class="eval-report-btn">
+        <text class="eval-report-text">查看完整考评报告</text>
+        <text class="eval-report-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 底部说明 -->
+    <view class="footer-note">
+      <text class="footer-note-text">科学训练 · 相互成就</text>
+      <text class="footer-note-sub">MPFD K9 行为学中心提供技术支持</text>
+    </view>
+  </view>
+
+  <!-- 底部使用原生 tabBar，无需自定义 -->
+</view>

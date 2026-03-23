@@ -1,0 +1,456 @@
+/* 旅程详情页样式 */
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: #F4F7F9;
+  padding-bottom: 160rpx;
+}
+
+/* --- 导航栏 --- */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(40px);
+  border-bottom: 1rpx solid #f1f5f9;
+  padding: 100rpx 40rpx 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  background: #f8fafc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -8rpx;
+}
+
+.nav-back-icon {
+  font-size: 40rpx;
+  color: #374151;
+  font-weight: 900;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #1e293b;
+  letter-spacing: 1rpx;
+}
+
+.nav-placeholder {
+  width: 64rpx;
+}
+
+/* --- 内容区 --- */
+.content-area {
+  padding: 40rpx;
+}
+
+/* --- 顶部状态卡片 --- */
+.status-card {
+  background: #1A3A5F;
+  border-radius: 48rpx;
+  padding: 48rpx;
+  color: #fff;
+  margin-bottom: 64rpx;
+  box-shadow: 0 20rpx 40rpx rgba(26,58,95,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.status-bg-icon {
+  position: absolute;
+  top: -32rpx;
+  right: -32rpx;
+  font-size: 240rpx;
+  opacity: 0.1;
+}
+
+.status-glow {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 256rpx;
+  height: 256rpx;
+  background: rgba(6,182,212,0.2);
+  border-radius: 50%;
+  filter: blur(60rpx);
+}
+
+.status-content {
+  position: relative;
+  z-index: 10;
+}
+
+.status-live-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.status-live-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: blink 1s infinite;
+  box-shadow: 0 0 16rpx rgba(239,68,68,0.8);
+}
+
+.status-live-label {
+  font-size: 20rpx;
+  color: #22d3ee;
+  font-weight: 900;
+  letter-spacing: 6rpx;
+  text-transform: uppercase;
+}
+
+.status-title {
+  font-size: 40rpx;
+  font-weight: 900;
+  margin-bottom: 24rpx;
+  letter-spacing: -1rpx;
+  text-shadow: 0 4rpx 12rpx rgba(0,0,0,0.2);
+  display: block;
+}
+
+.status-desc {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* --- 时间轴 --- */
+.timeline {
+  position: relative;
+  padding-left: 40rpx;
+  border-left: 3rpx solid #dbeafe;
+  margin-left: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 80rpx;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+/* --- 时间轴节点 --- */
+.timeline-dot {
+  position: absolute;
+  left: -62rpx;
+  top: -4rpx;
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  font-weight: 900;
+  border: 6rpx solid #F4F7F9;
+  z-index: 10;
+}
+
+.green-dot {
+  background: #22c55e;
+  color: #fff;
+  box-shadow: 0 4rpx 8rpx rgba(34,197,94,0.2);
+}
+
+.blue-dot {
+  background: #3B66F5;
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(59,102,245,0.3);
+}
+
+.gray-dot {
+  background: #e5e7eb;
+  color: #9ca3af;
+  font-size: 20rpx;
+}
+
+.timeline-dot-ping {
+  position: absolute;
+  left: -66rpx;
+  top: -8rpx;
+  width: 56rpx;
+  height: 56rpx;
+  background: rgba(59,102,245,0.2);
+  border-radius: 50%;
+  animation: ping 1.5s infinite;
+}
+
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.3; }
+  75%, 100% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* --- 时间轴内容 --- */
+.timeline-body {
+  padding-left: 8rpx;
+}
+
+.timeline-title-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
+  margin-top: -4rpx;
+}
+
+.timeline-title {
+  font-size: 30rpx;
+  font-weight: 900;
+  color: #1e293b;
+}
+
+.timeline-title.active-title {
+  font-size: 32rpx;
+  color: #3B66F5;
+  letter-spacing: -0.5rpx;
+}
+
+.timeline-title.gray-title {
+  color: #9ca3af;
+}
+
+.timeline-tag {
+  font-size: 20rpx;
+  font-weight: 700;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-family: monospace;
+}
+
+.done-tag {
+  color: #9ca3af;
+  background: #fff;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.05);
+}
+
+.active-tag {
+  color: #3B66F5;
+  background: #eff6ff;
+  border: 1rpx solid #dbeafe;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pending-tag {
+  color: #9ca3af;
+  background: #f1f5f9;
+}
+
+/* --- 步骤 --- */
+.timeline-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+
+.step-item {
+  display: flex;
+  gap: 24rpx;
+}
+
+.step-dot-col {
+  width: 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  margin-top: 12rpx;
+  flex-shrink: 0;
+}
+
+.step-dot.green { background: #86efac; }
+.step-dot.blue {
+  width: 20rpx;
+  height: 20rpx;
+  background: #3B66F5;
+  box-shadow: 0 0 16rpx rgba(59,102,245,0.6);
+  border: 4rpx solid #fff;
+}
+.step-dot.gray { background: #d1d5db; }
+
+.pulse-dot {
+  animation: blink 1.5s infinite;
+}
+
+.step-line {
+  width: 2rpx;
+  flex: 1;
+  background: rgba(209,213,219,0.4);
+  margin: 8rpx 0;
+}
+
+.step-line.blue-line {
+  background: rgba(147,197,253,0.4);
+}
+
+.step-content {
+  flex: 1;
+  padding-bottom: 16rpx;
+}
+
+.step-title {
+  font-size: 26rpx;
+  font-weight: 900;
+  color: #374151;
+  display: block;
+}
+
+.step-desc {
+  font-size: 22rpx;
+  color: #6b7280;
+  margin-top: 8rpx;
+  line-height: 1.6;
+  display: block;
+}
+
+.gray-text {
+  color: #9ca3af !important;
+}
+
+/* --- 活跃步骤 --- */
+.active-step-content {
+  background: rgba(239,246,255,0.7);
+  margin-left: -16rpx;
+  padding: 24rpx;
+  border-radius: 32rpx;
+  border: 1rpx solid #dbeafe;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.active-step-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.active-step-icon {
+  font-size: 24rpx;
+  color: #3B66F5;
+}
+
+.active-step-title {
+  font-size: 28rpx;
+  font-weight: 900;
+  color: #3B66F5;
+}
+
+.active-step-desc {
+  font-size: 24rpx;
+  color: #1e293b;
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+.active-step-warn {
+  font-size: 24rpx;
+  color: #d97706;
+  background: rgba(255,251,235,1);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+/* --- 日志面板 --- */
+.live-log-panel {
+  width: 100%;
+  background: #1A233A;
+  border-radius: 24rpx;
+  overflow: hidden;
+  padding: 24rpx;
+  border: 1rpx solid #334155;
+  margin-top: 24rpx;
+  margin-bottom: 8rpx;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.log-sys {
+  font-size: 20rpx;
+  font-family: monospace;
+  color: #93c5fd;
+}
+
+.log-live {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.log-live-dot {
+  width: 12rpx;
+  height: 12rpx;
+  background: #ef4444;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+.log-live-text {
+  font-size: 18rpx;
+  font-weight: 900;
+  color: #fff;
+}
+
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.log-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.log-time {
+  font-size: 20rpx;
+}
+
+.done-entry .log-time { color: #9ca3af; }
+.done-entry .log-check { font-size: 20rpx; color: #4ade80; }
+
+.current-entry {
+  background: rgba(30,58,138,0.3);
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+}
+.current-entry .log-time { color: #93c5fd; font-weight: 700; }
+.current-entry .log-wait { font-size: 20rpx; }
+
+.waiting-entry .log-time { color: #6b7280; }
+.waiting-entry .log-dash { font-size: 20rpx; color: #6b7280; }

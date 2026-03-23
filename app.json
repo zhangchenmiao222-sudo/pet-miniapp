@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/journey/journey",
+    "pages/training/training",
+    "pages/login/login",
+    "pages/care/care",
+    "pages/formula-detail/formula-detail",
+    "pages/medical-report/medical-report",
+    "pages/meal-plan-detail/meal-plan-detail",
+    "pages/article-detail/article-detail",
+    "pages/privacy/privacy"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1A3A5F",
+    "navigationBarTitleText": "妙巧巧 · MPFD",
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom"
+  },
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#ffffff4d",
+    "selectedColor": "#22d3ee",
+    "backgroundColor": "#1A3A5F",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "看板",
+        "iconPath": "images/tab_kanban.png",
+        "selectedIconPath": "images/tab_kanban_active.png"
+      },
+      {
+        "pagePath": "pages/training/training",
+        "text": "训练",
+        "iconPath": "images/tab_train.png",
+        "selectedIconPath": "images/tab_train_active.png"
+      }
+    ]
+  }
+}

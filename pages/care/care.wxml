@@ -1,0 +1,184 @@
+<!-- 养护管理页面 MPFD -->
+<scroll-view scroll-y class="page-container">
+
+  <!-- ===== 区域1：顶部品牌栏 ===== -->
+  <view class="header-bar">
+    <view class="header-left">
+      <view class="brand-name">妙巧巧·MPFD</view>
+      <view class="brand-sub">ANIMAL PRECISION NUTRITION</view>
+    </view>
+    <view class="header-right">
+      <view class="member-tag" bindtap="onViewMember">
+        {{pet.name}}：{{member.price}}¥
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 区域2：宠物信息卡片 ===== -->
+  <view class="section pet-section">
+    <view class="pet-main-info">
+      <view class="pet-name">{{pet.name}}</view>
+      <view class="pet-basic">{{pet.breed}} · {{pet.age_years}}岁 · {{pet.weight_kg}}kg</view>
+      <view class="pet-tags">
+        <text class="health-tag" wx:for="{{pet.health_tags}}" wx:key="index">{{item}}</text>
+      </view>
+      <view class="pet-no">编号 {{pet.pet_no}}</view>
+      <view class="smart-tag">智能配粮预约系统</view>
+    </view>
+  </view>
+
+  <!-- ===== 区域3：专属配方卡片 ===== -->
+  <view class="section card">
+    <view class="card-label">专属配方 · 第{{formula.period_num}}期</view>
+    <view class="formula-name">{{formula.name}}</view>
+    <view class="formula-indicator">{{formula.core_indicator}}</view>
+
+    <view class="ingredients-row">
+      <text class="ingredient-item" wx:for="{{ingredients}}" wx:key="index">{{item.name}}</text>
+    </view>
+
+    <view class="nutrients-tags">
+      <text class="nutrient-tag" wx:for="{{formula.special_nutrients}}" wx:key="index">{{item}}</text>
+    </view>
+
+    <view class="nutrition-bar">
+      <text>蛋白质 {{formula.protein_pct}}%</text>
+      <text>脂肪 {{formula.fat_pct}}%</text>
+      <text>{{formula.calories_per_100g}}千卡/100g</text>
+    </view>
+
+    <view class="read-more" bindtap="onViewFormula">阅读全文 ></view>
+  </view>
+
+  <!-- ===== 区域4：医学综合分析报告 ===== -->
+  <view class="section card">
+    <view class="report-header">
+      <text class="report-no">{{report.report_no}}</text>
+      <text class="verified-tag" wx:if="{{report.verified}}">VERIFIED</text>
+    </view>
+    <view class="section-title">医学综合分析报告</view>
+    <view class="section-sub">15页详细报告 · 涵盖多维生理活性系统</view>
+
+    <!-- 雷达图占位区域（后续替换为真实组件） -->
+    <view class="radar-placeholder">
+      <radar-chart radar-data="{{report.radar_data}}" />
+    </view>
+
+    <view class="report-scores">
+      <view class="score-row">
+        <text class="score-icon green">✓</text>
+        <text class="score-label">卓越健康指标</text>
+        <text class="score-num green">{{report.excellent_count}}项</text>
+      </view>
+      <view class="score-row">
+        <text class="score-icon orange">★</text>
+        <text class="score-label">黄金观察期预警</text>
+        <text class="score-num orange">{{report.observe_count}}项</text>
+      </view>
+      <view class="score-row">
+        <text class="score-icon blue">★</text>
+        <text class="score-label">专属营养干预中</text>
+        <text class="score-num blue">{{report.intervene_count}}项</text>
+      </view>
+    </view>
+
+    <view class="report-btn" bindtap="onViewReport">查阅完整分析报告 ></view>
+  </view>
+
+  <!-- ===== 区域5：今日养护看板 ===== -->
+  <view class="section card">
+    <view class="dashboard-header">
+      <view class="dashboard-title-wrap">
+        <text class="section-title">今日养护看板</text>
+        <text class="dashboard-sub">早{{dailyCare.meals_count}}餐 · 第{{dailyCare.day_count}}天</text>
+      </view>
+    </view>
+
+    <view class="total-food">
+      <text class="total-num">{{dailyCare.total_food_g}}g</text>
+      <text class="total-label">今日总食量</text>
+    </view>
+
+    <view class="food-circles">
+      <view class="food-circle blue-circle">
+        <text class="circle-num">{{dailyCare.meat_g}}g</text>
+        <text class="circle-label">荤食</text>
+      </view>
+      <view class="food-circle orange-circle">
+        <text class="circle-num">{{dailyCare.middle_g}}g</text>
+        <text class="circle-label">中食</text>
+      </view>
+      <view class="food-circle green-circle">
+        <text class="circle-num">{{dailyCare.veggie_g}}g</text>
+        <text class="circle-label">蔬低</text>
+      </view>
+    </view>
+
+    <!-- 散步指令 -->
+    <view class="walk-card">
+      <view class="walk-info">
+        <text class="walk-title">餐后散步指令</text>
+        <text class="walk-desc">{{dailyCare.walk_plan.duration_desc}} · {{dailyCare.walk_plan.name}}</text>
+      </view>
+      <view class="walk-status {{dailyCare.walk_completed ? 'done' : ''}}">
+        {{dailyCare.walk_completed ? '✓' : '○'}}
+      </view>
+    </view>
+
+    <!-- 饮水 -->
+    <view class="water-row">
+      <view class="water-left">
+        <text class="water-num">{{dailyCare.water_ml}}</text>
+        <text class="water-unit">ml / {{dailyCare.water_target_ml}}ml</text>
+      </view>
+      <view class="add-water-btn" bindtap="onAddWater">+100ml</view>
+    </view>
+
+    <!-- 额外记录 -->
+    <view class="extra-section">
+      <view class="extra-header">
+        <text class="extra-title">今日额外记录</text>
+      </view>
+      <view class="extra-item" wx:for="{{dailyCare.extra_records}}" wx:key="index">
+        <text>{{item.name}}</text>
+        <text class="extra-amount">{{item.amount}}</text>
+      </view>
+      <view class="add-extra-btn" bindtap="onAddExtra">＋ 添加记录</view>
+    </view>
+  </view>
+
+  <!-- ===== 区域6：定制料程 ===== -->
+  <view class="section card">
+    <view class="section-title">{{pet.name}}的专属定制料程</view>
+
+    <view class="stage-tabs">
+      <view class="stage-tab {{mealPlan.current_stage === 'cleaning' ? 'active' : ''}}">梳理消炎</view>
+      <view class="stage-tab {{mealPlan.current_stage === 'production' ? 'active' : ''}}">配方生产</view>
+      <view class="stage-tab {{mealPlan.current_stage === 'additives' ? 'active' : ''}}">特殊添加剂</view>
+      <view class="stage-tab {{mealPlan.current_stage === 'feeding' ? 'active' : ''}}">正式喂养</view>
+    </view>
+
+    <view class="live-tracker">
+      <view class="live-header">
+        <text class="live-stage">{{mealPlan.current_stage_label}}准备中</text>
+        <text class="live-tag" wx:if="{{mealPlan.is_live}}">LIVE</text>
+      </view>
+      <view class="progress-bar-wrap">
+        <view class="progress-bar" style="width: {{mealPlan.progress_pct}}%"></view>
+      </view>
+      <view class="progress-text">进度 {{mealPlan.progress_pct}}% · 共{{mealPlan.planned_days}}个环节</view>
+    </view>
+
+    <view class="read-more" bindtap="onViewMealPlan">查看整个料程 ></view>
+  </view>
+
+  <!-- ===== 区域7：营养科普文章 ===== -->
+  <view class="section card">
+    <view class="article-title">{{article.title}}</view>
+    <view class="article-preview">{{article.preview}}</view>
+    <view class="read-more" bindtap="onViewArticle">阅读全文 ></view>
+  </view>
+
+  <view class="page-bottom">妙巧巧—精准宠物营养管理</view>
+
+</scroll-view>
