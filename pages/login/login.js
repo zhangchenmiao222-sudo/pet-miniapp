@@ -41,13 +41,16 @@ Page({
         })
       })
 
+      console.log('登录返回结果:', JSON.stringify(res))
       if (res.code === 200) {
         const { token } = res.data
+        console.log('登录成功, userId:', res.data.user && res.data.user.id)
         app.globalData.token = token
         wx.setStorageSync('token', token)
         // 登录成功 → 跳主页
         wx.switchTab({ url: '/pages/index/index' })
       } else {
+        console.log('登录失败:', res.code, res.message)
         wx.showToast({ title: res.message || '登录失败', icon: 'none' })
       }
     } catch (e) {
