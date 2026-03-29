@@ -175,7 +175,7 @@ Page({
 
   // 查看会员
   onViewMember() {
-    wx.navigateTo({ url: '/pages/profile/profile' })
+    wx.switchTab({ url: '/pages/profile/profile' })
   },
 
   // 添加额外记录
