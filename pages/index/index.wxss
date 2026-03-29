@@ -2053,6 +2053,219 @@
 }
 
 /* =====================================================
+   新增：送朋友免费体检邀请卡
+   ===================================================== */
+.invite-card {
+  position: relative;
+  background: linear-gradient(135deg, #0F2A4A, #1A3A5F);
+  border-radius: 48rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(34,211,238,0.2);
+}
+
+.invite-card-glow {
+  position: absolute;
+  top: -40rpx;
+  right: -40rpx;
+  width: 200rpx;
+  height: 200rpx;
+  background: radial-gradient(circle, rgba(34,211,238,0.2) 0%, transparent 70%);
+}
+
+.invite-card-content {
+  position: relative;
+  padding: 40rpx;
+}
+
+.invite-card-header {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 28rpx;
+}
+
+.invite-card-icon {
+  font-size: 56rpx;
+}
+
+.invite-card-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.invite-card-title {
+  font-size: 34rpx;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.invite-card-subtitle {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.6);
+  margin-top: 4rpx;
+}
+
+.invite-card-body {
+  margin-bottom: 28rpx;
+}
+
+.invite-benefit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.invite-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: rgba(255,255,255,0.06);
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+}
+
+.invite-benefit-icon {
+  font-size: 28rpx;
+}
+
+.invite-benefit-text {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+}
+
+.invite-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.invite-btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, #22d3ee, #3B66F5);
+  border-radius: 40rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(34,211,238,0.3);
+}
+
+.invite-btn-text {
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.invite-btn-secondary {
+  padding: 24rpx 20rpx;
+}
+
+.invite-btn-sec-text {
+  color: #22d3ee;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+/* 邀请卡片生成弹窗 */
+.invite-share-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invite-share-modal {
+  width: 85%;
+  max-width: 660rpx;
+  background: #1A2740;
+  border-radius: 32rpx;
+  overflow: hidden;
+}
+
+.invite-share-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid rgba(255,255,255,0.08);
+}
+
+.invite-share-title {
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.invite-share-close {
+  color: rgba(255,255,255,0.5);
+  font-size: 36rpx;
+  padding: 8rpx;
+}
+
+.invite-share-body {
+  padding: 24rpx 32rpx;
+}
+
+.invite-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.invite-canvas {
+  background: #0F1B2D;
+  border-radius: 16rpx;
+}
+
+.invite-share-tips {
+  text-align: center;
+  margin-top: 16rpx;
+}
+
+.invite-share-tip {
+  color: rgba(255,255,255,0.5);
+  font-size: 22rpx;
+}
+
+.invite-share-actions {
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx 32rpx 32rpx;
+}
+
+.invite-share-btn-wx {
+  flex: 1;
+  background: #07C160 !important;
+  color: #FFFFFF !important;
+  border-radius: 40rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+  line-height: 1.4;
+}
+
+.invite-share-btn-save {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border-radius: 40rpx;
+  padding: 20rpx 0;
+  text-align: center;
+}
+
+.invite-share-btn-save-text {
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+/* =====================================================
    新增：社会证明
    ===================================================== */
 .social-proof-card {

@@ -1,0 +1,95 @@
+<!-- 母号：我的邀请 & 奖励 -->
+<view class="container">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">我的邀请</text>
+  </view>
+
+  <!-- 汇总卡片 -->
+  <view class="summary-card">
+    <view class="summary-item">
+      <text class="summary-num">{{invites.length}}</text>
+      <text class="summary-label">已邀请</text>
+    </view>
+    <view class="summary-sep"></view>
+    <view class="summary-item">
+      <text class="summary-num">{{summary.available_fen / 100}}</text>
+      <text class="summary-label">可用直减金(元)</text>
+    </view>
+    <view class="summary-sep"></view>
+    <view class="summary-item">
+      <text class="summary-num">{{summary.used_fen / 100}}</text>
+      <text class="summary-label">已使用(元)</text>
+    </view>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tab-bar-custom">
+    <view class="tab-item-custom {{tab === 'invites' ? 'active' : ''}}" bindtap="switchTab" data-tab="invites">
+      <text class="tab-text">邀请记录</text>
+    </view>
+    <view class="tab-item-custom {{tab === 'rewards' ? 'active' : ''}}" bindtap="switchTab" data-tab="rewards">
+      <text class="tab-text">我的奖励</text>
+    </view>
+  </view>
+
+  <!-- 邀请记录列表 -->
+  <view class="list" wx:if="{{tab === 'invites'}}">
+    <view class="empty-tip" wx:if="{{invites.length === 0 && !loading}}">
+      <text class="empty-icon">📨</text>
+      <text class="empty-text">还没有邀请记录</text>
+      <text class="empty-desc">在首页点击「送朋友免费体检」开始邀请</text>
+    </view>
+    <view class="invite-item" wx:for="{{invites}}" wx:key="id">
+      <view class="invite-item-top">
+        <view class="invite-item-left">
+          <image class="invite-item-avatar" wx:if="{{item.child_avatar}}" src="{{item.child_avatar}}" mode="aspectFill" />
+          <view class="invite-item-avatar-placeholder" wx:else>
+            <text class="invite-item-avatar-text">?</text>
+          </view>
+          <view class="invite-item-info">
+            <text class="invite-item-name">{{item.child_nickname || '等待好友接受'}}</text>
+            <text class="invite-item-pet" wx:if="{{item.child_pet_name}}">{{item.child_pet_name}}</text>
+          </view>
+        </view>
+        <view class="invite-item-status status-{{item.status}}">
+          <text class="invite-item-status-text">{{item.status === 'pending' ? '等待接受' : item.status === 'accepted' ? '已接受' : item.status === 'checkup_applied' ? '已申请体检' : item.status === 'checkup_done' ? '体检完成' : '已转化'}}</text>
+        </view>
+      </view>
+      <view class="invite-item-bottom">
+        <text class="invite-item-code">邀请码: {{item.invite_code}}</text>
+        <text class="invite-item-time">{{item.created_at}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 奖励列表 -->
+  <view class="list" wx:if="{{tab === 'rewards'}}">
+    <view class="empty-tip" wx:if="{{rewards.length === 0 && !loading}}">
+      <text class="empty-icon">💰</text>
+      <text class="empty-text">还没有奖励</text>
+      <text class="empty-desc">邀请好友完成体检后即可获得复购直减金</text>
+    </view>
+    <view class="reward-item" wx:for="{{rewards}}" wx:key="id">
+      <view class="reward-item-left">
+        <view class="reward-amount">
+          <text class="reward-amount-num">{{item.amount_fen / 100}}</text>
+          <text class="reward-amount-unit">元</text>
+        </view>
+        <text class="reward-desc">复购直减金</text>
+        <text class="reward-from" wx:if="{{item.child_nickname}}">来自 {{item.child_nickname}} 的邀请</text>
+      </view>
+      <view class="reward-item-right">
+        <view class="reward-status reward-status-{{item.status}}">
+          <text class="reward-status-text">{{item.status === 'pending' ? '待激活' : item.status === 'active' ? '可使用' : item.status === 'used' ? '已使用' : '已过期'}}</text>
+        </view>
+        <text class="reward-expire" wx:if="{{item.expire_at}}">{{item.expire_at}} 到期</text>
+      </view>
+    </view>
+  </view>
+
+</view>

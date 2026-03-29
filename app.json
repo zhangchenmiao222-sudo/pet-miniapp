@@ -10,7 +10,9 @@
     "pages/meal-plan-detail/meal-plan-detail",
     "pages/article-detail/article-detail",
     "pages/privacy/privacy",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/invite-view/invite-view",
+    "pages/my-invites/my-invites"
   ],
   "window": {
     "backgroundTextStyle": "light",

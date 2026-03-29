@@ -458,6 +458,40 @@
         </view>
       </view>
 
+      <!-- ========== 送朋友免费体检 ========== -->
+      <view class="invite-card" wx:if="{{pageState === 'live'}}">
+        <view class="invite-card-glow"></view>
+        <view class="invite-card-content">
+          <view class="invite-card-header">
+            <text class="invite-card-icon">🎁</text>
+            <view class="invite-card-title-wrap">
+              <text class="invite-card-title">送朋友免费体检</text>
+              <text class="invite-card-subtitle">邀请好友体验精准营养，你获得复购直减金</text>
+            </view>
+          </view>
+          <view class="invite-card-body">
+            <view class="invite-benefit-row">
+              <view class="invite-benefit-item">
+                <text class="invite-benefit-icon">💝</text>
+                <text class="invite-benefit-text">朋友免费获得血液检测</text>
+              </view>
+              <view class="invite-benefit-item">
+                <text class="invite-benefit-icon">💰</text>
+                <text class="invite-benefit-text">你获得30元复购直减金</text>
+              </view>
+            </view>
+          </view>
+          <view class="invite-card-actions">
+            <view class="invite-btn-primary" bindtap="onInviteFriend">
+              <text class="invite-btn-text">生成专属邀请卡</text>
+            </view>
+            <view class="invite-btn-secondary" bindtap="goMyInvites">
+              <text class="invite-btn-sec-text">我的邀请 ›</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <!-- ========== 社会证明 ========== -->
       <view class="social-proof-card">
         <text class="social-proof-title">已有众多犬主选择妙巧巧</text>
@@ -536,6 +570,32 @@
       <button class="pet-form-submit" bindtap="submitPetForm" loading="{{formSubmitting}}">
         提交并解锁
       </button>
+    </view>
+  </view>
+
+  <!-- ========== 邀请卡片生成弹窗 ========== -->
+  <view class="invite-share-mask" wx:if="{{showInviteCard}}" catchtouchmove="true">
+    <view class="invite-share-modal">
+      <view class="invite-share-header">
+        <text class="invite-share-title">专属邀请卡已生成</text>
+        <view class="invite-share-close" bindtap="closeInviteCard">✕</view>
+      </view>
+      <view class="invite-share-body">
+        <view class="invite-canvas-wrap">
+          <canvas type="2d" id="inviteCanvas" class="invite-canvas" style="width: 500rpx; height: 400rpx;"></canvas>
+        </view>
+        <view class="invite-share-tips">
+          <text class="invite-share-tip">点击下方按钮分享给好友</text>
+        </view>
+      </view>
+      <view class="invite-share-actions">
+        <button class="invite-share-btn-wx" open-type="share">
+          <text class="invite-share-btn-text">发送给微信好友</text>
+        </button>
+        <view class="invite-share-btn-save" bindtap="saveInviteCard">
+          <text class="invite-share-btn-save-text">保存到相册</text>
+        </view>
+      </view>
     </view>
   </view>
 

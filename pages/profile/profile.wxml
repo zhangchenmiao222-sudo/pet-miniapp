@@ -1,77 +1,246 @@
+<!-- 我的页面 -->
 <view class="page">
+
+  <!-- 自定义导航栏 -->
   <view class="nav-bar">
-    <text class="nav-title">个人中心</text>
+    <text class="nav-title">我的</text>
   </view>
 
-  <view class="content" wx:if="{{!loading}}">
-    <!-- 用户信息卡片 -->
-    <view class="user-card">
-      <view class="avatar-wrap">
-        <image class="avatar" wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill"></image>
-        <view class="avatar-placeholder" wx:else>
-          <text class="avatar-text">{{userInfo.nickname[0] || 'U'}}</text>
+  <!-- 未登录状态 -->
+  <view class="not-login" wx:if="{{!loading && !userInfo}}">
+    <view class="not-login-icon">🔬</view>
+    <text class="not-login-title">妙巧巧 · MPFD</text>
+    <text class="not-login-desc">登录后享受精准宠物营养管理</text>
+    <view class="login-btn" bindtap="goLogin">
+      <text class="login-btn-text">微信登录</text>
+    </view>
+  </view>
+
+  <!-- 已登录内容 -->
+  <view class="content" wx:if="{{!loading && userInfo}}">
+
+    <!-- ========== 用户头像卡片 ========== -->
+    <view class="user-hero">
+      <view class="user-hero-bg"></view>
+      <view class="user-hero-content">
+        <view class="avatar-wrap" bindtap="onChooseAvatar">
+          <image class="avatar" wx:if="{{userInfo.avatar_url}}" src="{{userInfo.avatar_url}}" mode="aspectFill" />
+          <view class="avatar-placeholder" wx:else>
+            <text class="avatar-emoji">👤</text>
+          </view>
+          <view class="avatar-edit-badge">
+            <text class="avatar-edit-icon">📷</text>
+          </view>
         </view>
-      </view>
-      <view class="user-info">
-        <text class="user-name">{{userInfo.nickname}}</text>
-        <view class="member-status" wx:if="{{memberInfo}}">
-          <text class="member-badge" wx:if="{{memberInfo.is_active}}">
-            {{memberInfo.member_type === 'yearly' ? '年度会员' : memberInfo.member_type === 'quarterly' ? '季度会员' : '月度会员'}}
-          </text>
-          <text class="member-expire" wx:if="{{memberInfo.is_active}}">到期：{{memberInfo.member_expire_date}}</text>
-          <text class="no-member" wx:else>未开通会员</text>
+        <view class="user-meta">
+          <view class="user-name-row" bindtap="openEditUser">
+            <text class="user-name">{{userInfo.nickname || '宠物主人'}}</text>
+            <text class="user-name-edit">✎</text>
+          </view>
+          <view class="member-badge-row">
+            <view class="member-badge active" wx:if="{{memberInfo && memberInfo.is_active}}">
+              <text class="member-badge-icon">👑</text>
+              <text class="member-badge-text">{{memberInfo.member_type === 'yearly' ? '年度会员' : memberInfo.member_type === 'quarterly' ? '季度会员' : '月度会员'}}</text>
+            </view>
+            <view class="member-badge inactive" wx:else bindtap="onBuyMember">
+              <text class="member-badge-text">开通会员</text>
+              <text class="member-badge-arrow">›</text>
+            </view>
+          </view>
+          <text class="member-expire" wx:if="{{memberInfo && memberInfo.is_active}}">到期：{{memberInfo.member_expire_date}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 宠物信息 -->
-    <view class="section-card" wx:if="{{pet}}">
+    <!-- ========== 邀请+奖励快捷入口 ========== -->
+    <view class="quick-stats" bindtap="goMyInvites">
+      <view class="quick-stat-item">
+        <text class="quick-stat-num">{{inviteCount}}</text>
+        <text class="quick-stat-label">已邀请好友</text>
+      </view>
+      <view class="quick-stat-sep"></view>
+      <view class="quick-stat-item">
+        <text class="quick-stat-num">{{rewardAmount}}</text>
+        <text class="quick-stat-label">可用直减金(元)</text>
+      </view>
+      <view class="quick-stat-arrow">
+        <text class="quick-stat-arrow-text">查看详情 ›</text>
+      </view>
+    </view>
+
+    <!-- ========== 我的宠物 ========== -->
+    <view class="section-card pet-card" wx:if="{{pet}}">
       <view class="section-header">
+        <text class="section-icon">🐾</text>
         <text class="section-title">我的宠物</text>
-      </view>
-      <view class="pet-info-row">
-        <view class="pet-detail">
-          <text class="pet-name">{{pet.name}}</text>
-          <text class="pet-basic">{{pet.breed}} · {{pet.age_years}}岁 · {{pet.weight_kg}}kg</text>
-          <text class="pet-no">编号 {{pet.pet_no}}</text>
+        <view class="section-action" bindtap="openEditPet">
+          <text class="section-action-text">编辑信息</text>
         </view>
       </view>
-      <view class="pet-tags" wx:if="{{pet.health_tags.length > 0}}">
-        <text class="tag" wx:for="{{pet.health_tags}}" wx:key="index">{{item}}</text>
+
+      <!-- 宠物照片区 -->
+      <view class="pet-photo-area">
+        <view class="pet-main-photo" bindtap="onChoosePetPhoto">
+          <image class="pet-photo-img" wx:if="{{pet.photo_urls && pet.photo_urls.length > 0}}" src="{{pet.photo_urls[0]}}" mode="aspectFill" />
+          <view class="pet-photo-empty" wx:else>
+            <text class="pet-photo-empty-icon">📸</text>
+            <text class="pet-photo-empty-text">上传照片</text>
+          </view>
+          <view class="pet-photo-edit">
+            <text class="pet-photo-edit-text">{{pet.photo_urls && pet.photo_urls.length > 0 ? '更换照片' : '点击上传'}}</text>
+          </view>
+        </view>
+        <!-- 小图列表 -->
+        <view class="pet-photo-thumbs" wx:if="{{pet.photo_urls && pet.photo_urls.length > 1}}">
+          <image class="pet-thumb" wx:for="{{pet.photo_urls}}" wx:key="index" wx:if="{{index > 0 && index < 4}}" src="{{item}}" mode="aspectFill" />
+          <view class="pet-thumb-add" bindtap="onChoosePetPhoto">
+            <text class="pet-thumb-add-icon">+</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 宠物信息 -->
+      <view class="pet-info-section">
+        <view class="pet-name-row">
+          <text class="pet-name">{{pet.name}}</text>
+          <text class="pet-no">{{pet.pet_no}}</text>
+        </view>
+        <view class="pet-detail-grid">
+          <view class="pet-detail-item">
+            <text class="pet-detail-label">品种</text>
+            <text class="pet-detail-value">{{pet.breed || '未设置'}}</text>
+          </view>
+          <view class="pet-detail-item">
+            <text class="pet-detail-label">年龄</text>
+            <text class="pet-detail-value">{{pet.age_years || 0}}岁</text>
+          </view>
+          <view class="pet-detail-item">
+            <text class="pet-detail-label">体重</text>
+            <text class="pet-detail-value">{{pet.weight_kg || 0}}kg</text>
+          </view>
+        </view>
+        <view class="pet-tags" wx:if="{{pet.health_tags && pet.health_tags.length > 0}}">
+          <text class="pet-tag" wx:for="{{pet.health_tags}}" wx:key="index">{{item}}</text>
+        </view>
+        <view class="pet-checkup" wx:if="{{pet.checkup_date}}">
+          <text class="pet-checkup-icon">🛡️</text>
+          <text class="pet-checkup-text">最近体检：{{pet.checkup_date}}</text>
+        </view>
       </view>
     </view>
 
-    <!-- 会员服务 -->
-    <view class="section-card" wx:if="{{!memberInfo || !memberInfo.is_active}}">
-      <view class="member-promo">
-        <text class="promo-title">开通妙巧巧会员</text>
-        <text class="promo-desc">享受专属营养配方、医学分析报告等全部功能</text>
-        <view class="promo-btn" bindtap="onBuyMember">128元/年 立即开通</view>
-      </view>
+    <!-- 无宠物时 -->
+    <view class="section-card no-pet-card" wx:if="{{!pet}}">
+      <text class="no-pet-icon">🐕</text>
+      <text class="no-pet-text">还没有添加宠物</text>
+      <text class="no-pet-desc">回到首页填写宠物信息，开启专属营养之旅</text>
     </view>
 
-    <!-- 功能列表 -->
+    <!-- ========== 功能菜单 ========== -->
     <view class="section-card menu-card">
-      <view class="menu-item" bindtap="onViewPrivacy">
-        <text class="menu-text">用户隐私协议</text>
+      <view class="menu-item" bindtap="goMyInvites">
+        <view class="menu-item-left">
+          <text class="menu-icon">🎁</text>
+          <text class="menu-text">邀请管理</text>
+        </view>
+        <view class="menu-item-right">
+          <text class="menu-badge" wx:if="{{inviteCount > 0}}">{{inviteCount}}</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+      <view class="menu-item" bindtap="onBuyMember">
+        <view class="menu-item-left">
+          <text class="menu-icon">👑</text>
+          <text class="menu-text">会员中心</text>
+        </view>
         <text class="menu-arrow">›</text>
       </view>
       <view class="menu-item" bindtap="onContact">
-        <text class="menu-text">联系客服</text>
+        <view class="menu-item-left">
+          <text class="menu-icon">💬</text>
+          <text class="menu-text">联系客服</text>
+        </view>
         <text class="menu-arrow">›</text>
       </view>
-      <view class="menu-item logout" bindtap="onLogout">
-        <text class="menu-text">退出登录</text>
+      <view class="menu-item" bindtap="onViewPrivacy">
+        <view class="menu-item-left">
+          <text class="menu-icon">📋</text>
+          <text class="menu-text">隐私协议</text>
+        </view>
         <text class="menu-arrow">›</text>
       </view>
     </view>
 
-    <view class="page-bottom">
-      <text class="footer-text">妙巧巧·MPFD 精准宠物营养管理 v1.0</text>
+    <!-- 退出登录 -->
+    <view class="logout-btn" bindtap="onLogout">
+      <text class="logout-text">退出登录</text>
+    </view>
+
+    <view class="page-footer">
+      <text class="footer-text">妙巧巧 · MPFD 精准宠物营养管理</text>
+      <text class="footer-version">v1.0</text>
     </view>
   </view>
 
+  <!-- 加载中 -->
   <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
     <text class="loading-text">加载中...</text>
   </view>
+
+  <!-- ========== 编辑昵称弹窗 ========== -->
+  <view class="edit-mask" wx:if="{{showEditUser}}" catchtouchmove="true">
+    <view class="edit-modal">
+      <view class="edit-modal-header">
+        <text class="edit-modal-title">修改昵称</text>
+        <view class="edit-modal-close" bindtap="closeEditUser">✕</view>
+      </view>
+      <view class="edit-modal-body">
+        <input class="edit-input" value="{{editNickname}}" bindinput="onEditNickname" placeholder="请输入昵称" maxlength="20" focus="{{showEditUser}}" />
+      </view>
+      <view class="edit-modal-footer">
+        <view class="edit-btn-cancel" bindtap="closeEditUser">取消</view>
+        <view class="edit-btn-save" bindtap="saveNickname">保存</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 编辑宠物信息弹窗 ========== -->
+  <view class="edit-mask" wx:if="{{showEditPet}}" catchtouchmove="true">
+    <view class="edit-modal pet-edit-modal">
+      <view class="edit-modal-header">
+        <text class="edit-modal-title">编辑宠物信息</text>
+        <view class="edit-modal-close" bindtap="closeEditPet">✕</view>
+      </view>
+      <scroll-view scroll-y class="edit-modal-body">
+        <view class="form-group">
+          <text class="form-label">名字 *</text>
+          <input class="edit-input" value="{{editPetForm.name}}" data-field="name" bindinput="onEditPetInput" placeholder="宠物名字" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">品种</text>
+          <input class="edit-input" value="{{editPetForm.breed}}" data-field="breed" bindinput="onEditPetInput" placeholder="如：柯基、金毛" />
+        </view>
+        <view class="form-row">
+          <view class="form-group half">
+            <text class="form-label">年龄(岁)</text>
+            <input class="edit-input" type="digit" value="{{editPetForm.age_years}}" data-field="age_years" bindinput="onEditPetInput" placeholder="如 3" />
+          </view>
+          <view class="form-group half">
+            <text class="form-label">体重(kg)</text>
+            <input class="edit-input" type="digit" value="{{editPetForm.weight_kg}}" data-field="weight_kg" bindinput="onEditPetInput" placeholder="如 12.5" />
+          </view>
+        </view>
+        <view class="form-group">
+          <text class="form-label">备注</text>
+          <textarea class="edit-textarea" value="{{editPetForm.description}}" data-field="description" bindinput="onEditPetInput" placeholder="其他需要记录的信息" />
+        </view>
+      </scroll-view>
+      <view class="edit-modal-footer">
+        <view class="edit-btn-cancel" bindtap="closeEditPet">取消</view>
+        <view class="edit-btn-save" bindtap="savePetInfo">{{editSubmitting ? '保存中...' : '保存'}}</view>
+      </view>
+    </view>
+  </view>
+
 </view>

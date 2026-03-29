@@ -1,0 +1,291 @@
+<!-- 子号浏览母号页面：展示母号完整数据 + 底部申请免费体检 -->
+<view class="container">
+
+  <!-- 加载状态 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在加载好友的档案...</text>
+  </view>
+
+  <block wx:if="{{!loading && pet}}">
+
+    <!-- ========== 邀请横幅 ========== -->
+    <view class="invite-banner">
+      <view class="invite-banner-avatar" wx:if="{{parent && parent.avatar_url}}">
+        <image class="invite-avatar-img" src="{{parent.avatar_url}}" mode="aspectFill" />
+      </view>
+      <view class="invite-banner-text">
+        <text class="invite-banner-title">{{parent.nickname || '好友'}} 给你申请了一次免费体检</text>
+        <text class="invite-banner-desc">看看 TA 家{{pet.name}}的精准营养档案</text>
+      </view>
+    </view>
+
+    <!-- ========== 母号宠物英雄区 ========== -->
+    <view class="hero-section">
+      <image class="hero-bg" src="https://images.unsplash.com/photo-1544568100-847a948585b9?q=80&w=1000&auto=format&fit=crop" mode="aspectFill" />
+      <view class="hero-mask"></view>
+
+      <view class="brand-area">
+        <view class="brand-left">
+          <view class="brand-icon"><text class="brand-icon-text">🔬</text></view>
+          <view class="brand-info">
+            <text class="brand-name">妙巧巧 · MPFD</text>
+            <text class="brand-en">Animal Precision Nutrition</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="pet-identity">
+        <text class="pet-name">{{pet.name}}</text>
+        <text class="pet-info">{{pet.breed}} · {{pet.age_years}}岁 · {{pet.weight_kg}}kg</text>
+        <view class="pet-status">
+          <view class="status-pill" wx:for="{{pet.health_tags}}" wx:key="index">
+            <text class="status-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 专属配方 -->
+      <view class="formula-card" wx:if="{{formula}}">
+        <view class="formula-reason" wx:if="{{formula.core_indicator}}">
+          <text class="formula-reason-icon">🩸</text>
+          <text class="formula-reason-text">{{formula.core_indicator}}</text>
+        </view>
+        <view class="formula-header">
+          <view class="formula-label-row">
+            <text class="formula-label">专属配方</text>
+            <view class="formula-dot"></view>
+            <text class="formula-label">第{{formula.period_num}}期</text>
+          </view>
+          <text class="formula-title">「{{formula.name}}」</text>
+        </view>
+        <view class="formula-footer">
+          <view class="formula-nutrients">
+            <text class="nutrient-text">蛋白质 {{formula.protein_pct}}%</text>
+            <view class="nutrient-sep"></view>
+            <text class="nutrient-text">脂肪 {{formula.fat_pct}}%</text>
+            <view class="nutrient-sep"></view>
+            <text class="nutrient-text">{{formula.calories_per_100g}}千卡/100g</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 医学报告区 ========== -->
+    <view class="report-card" wx:if="{{report}}">
+      <view class="emotion-banner">
+        <text class="emotion-text">每一项指标背后，都是对{{pet.name}}健康的深度守护</text>
+      </view>
+      <view class="report-header">
+        <view class="report-header-content">
+          <view class="report-header-left">
+            <view class="report-badges">
+              <text class="report-badge-id">{{report.report_no}}</text>
+              <text class="report-badge-verified" wx:if="{{report.verified}}">Verified</text>
+            </view>
+            <text class="report-title">医学综合分析报告</text>
+            <text class="report-subtitle">{{report.total_pages}}页深度解析 · 涵盖6大生理系统</text>
+          </view>
+        </view>
+      </view>
+      <view class="report-body">
+        <view class="report-inner-card">
+          <view class="radar-title-row">
+            <text class="radar-title">全系统多维健康透析画像</text>
+            <text class="radar-badge">14项核心指标</text>
+          </view>
+          <view class="radar-chart-wrap">
+            <text class="radar-label top {{alertFlags[0] ? 'red' : ''}}">消化系统</text>
+            <text class="radar-label top-right {{alertFlags[1] ? 'red' : ''}}">骨骼肌肉</text>
+            <text class="radar-label bottom-right {{alertFlags[2] ? 'red' : ''}}">皮肤毛发</text>
+            <text class="radar-label bottom {{alertFlags[3] ? 'red' : ''}}">心血管</text>
+            <text class="radar-label bottom-left {{alertFlags[4] ? 'red' : ''}}">免疫系统</text>
+            <text class="radar-label top-left {{alertFlags[5] ? 'red' : ''}}">内分泌</text>
+            <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
+          </view>
+          <view class="conclusion-list">
+            <view class="conclusion-item">
+              <view class="conclusion-icon green">✓</view>
+              <view class="conclusion-text">
+                <text class="conclusion-title">卓越健康指标</text>
+              </view>
+              <view class="conclusion-count">
+                <text class="count-num green">{{report.excellent_count}}</text>
+                <text class="count-unit">项</text>
+              </view>
+            </view>
+            <view class="conclusion-item">
+              <view class="conclusion-icon amber">⚠</view>
+              <view class="conclusion-text">
+                <text class="conclusion-title">黄金观察期</text>
+              </view>
+              <view class="conclusion-count">
+                <text class="count-num amber">{{report.observe_count}}</text>
+                <text class="count-unit">项</text>
+              </view>
+            </view>
+            <view class="conclusion-item">
+              <view class="conclusion-icon blue">⚗</view>
+              <view class="conclusion-text">
+                <text class="conclusion-title">专属营养干预中</text>
+              </view>
+              <view class="conclusion-count">
+                <text class="count-num blue">{{report.intervene_count}}</text>
+                <text class="count-unit">项</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 今日养护 ========== -->
+    <view class="care-card" wx:if="{{dailyCare}}">
+      <view class="care-header">
+        <view class="care-header-left">
+          <text class="care-icon-text">⚖️</text>
+          <text class="care-title">今日养护看板</text>
+        </view>
+        <view class="care-status-tag">精准执行中</view>
+      </view>
+      <view class="meal-grid">
+        <view class="meal-item">
+          <text class="meal-label">荤食</text>
+          <text class="meal-num">{{dailyCare.meat_g}}g</text>
+        </view>
+        <view class="meal-item">
+          <text class="meal-label">中食</text>
+          <text class="meal-num">{{dailyCare.middle_g}}g</text>
+        </view>
+        <view class="meal-item">
+          <text class="meal-label">蔬食</text>
+          <text class="meal-num">{{dailyCare.veggie_g}}g</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 定制旅程 ========== -->
+    <view class="journey-card" wx:if="{{mealPlan}}">
+      <view class="journey-header">
+        <text class="journey-title">{{pet.name}}的专属定制旅程</text>
+        <view class="journey-live-tag" wx:if="{{mealPlan.is_live}}">
+          <view class="journey-live-dot on"></view>
+          <text class="journey-live-text">定制进行中</text>
+        </view>
+      </view>
+      <view class="journey-progress">
+        <view class="journey-nodes">
+          <view class="journey-node-item">
+            <view class="journey-node done">🔬</view>
+            <text class="journey-node-label">检测出具</text>
+          </view>
+          <view class="journey-node-item">
+            <view class="journey-node done">🤖</view>
+            <text class="journey-node-label">配方生成</text>
+          </view>
+          <view class="journey-node-item">
+            <view class="journey-node active">🔥</view>
+            <text class="journey-node-label">备料生产</text>
+          </view>
+          <view class="journey-node-item">
+            <view class="journey-node pending-node">🚚</view>
+            <text class="journey-node-label">新鲜送达</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 羡慕引导区 ========== -->
+    <view class="envy-section">
+      <view class="envy-card">
+        <view class="envy-icon">🎁</view>
+        <text class="envy-title">你的狗狗也值得拥有专属健康方案</text>
+        <text class="envy-desc">{{parent.nickname || '好友'}}已为你申请了一次免费血液检测体检，每只狗狗的身体状况不同，让我们通过科学检测，找到最适合你家狗狗的营养方案。</text>
+        <view class="envy-steps">
+          <view class="envy-step">
+            <view class="envy-step-num">1</view>
+            <text class="envy-step-text">填写狗狗信息</text>
+          </view>
+          <view class="envy-step-arrow">→</view>
+          <view class="envy-step">
+            <view class="envy-step-num">2</view>
+            <text class="envy-step-text">去医院采血</text>
+          </view>
+          <view class="envy-step-arrow">→</view>
+          <view class="envy-step">
+            <view class="envy-step-num">3</view>
+            <text class="envy-step-text">寄送样本</text>
+          </view>
+          <view class="envy-step-arrow">→</view>
+          <view class="envy-step">
+            <view class="envy-step-num">4</view>
+            <text class="envy-step-text">获取报告</text>
+          </view>
+        </view>
+        <view class="envy-cost-info">
+          <text class="envy-cost-free">检测费用：免费</text>
+          <text class="envy-cost-note">（仅需自行承担采血+快递费用）</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 底部固定申请按钮 ========== -->
+    <view class="bottom-bar">
+      <view class="apply-btn {{applied ? 'disabled' : ''}}" bindtap="{{applied ? '' : 'openApplyForm'}}">
+        <text class="apply-btn-icon">{{applied ? '✓' : '🎁'}}</text>
+        <text class="apply-btn-text">{{applied ? '已提交申请' : '立即申请免费体检'}}</text>
+      </view>
+    </view>
+    <!-- 占位 -->
+    <view style="height: 120rpx;"></view>
+
+  </block>
+
+  <!-- ========== 体检申请弹窗 ========== -->
+  <view class="apply-mask" wx:if="{{showApplyForm}}" catchtouchmove="true">
+    <view class="apply-modal">
+      <view class="apply-modal-header">
+        <text class="apply-modal-title">申请免费体检</text>
+        <text class="apply-modal-subtitle">填写您的狗狗信息，我们将寄出采血包</text>
+        <view class="apply-modal-close" bindtap="closeApplyForm">✕</view>
+      </view>
+      <scroll-view scroll-y class="apply-modal-body">
+        <view class="form-group">
+          <text class="form-label">狗狗名字 *</text>
+          <input class="form-input" placeholder="请输入狗狗名字" data-field="pet_name" bindinput="onApplyInput" value="{{applyForm.pet_name}}" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">品种</text>
+          <input class="form-input" placeholder="如：柯基、金毛" data-field="pet_breed" bindinput="onApplyInput" value="{{applyForm.pet_breed}}" />
+        </view>
+        <view class="form-row">
+          <view class="form-group half">
+            <text class="form-label">年龄</text>
+            <input class="form-input" placeholder="如 3岁" data-field="pet_age" bindinput="onApplyInput" value="{{applyForm.pet_age}}" />
+          </view>
+          <view class="form-group half">
+            <text class="form-label">体重</text>
+            <input class="form-input" type="digit" placeholder="如 12.5kg" data-field="pet_weight" bindinput="onApplyInput" value="{{applyForm.pet_weight}}" />
+          </view>
+        </view>
+        <view class="form-divider"></view>
+        <view class="form-group">
+          <text class="form-label">您的姓名</text>
+          <input class="form-input" placeholder="联系人姓名" data-field="contact_name" bindinput="onApplyInput" value="{{applyForm.contact_name}}" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">联系电话 *</text>
+          <input class="form-input" type="number" placeholder="用于接收快递通知" data-field="contact_phone" bindinput="onApplyInput" value="{{applyForm.contact_phone}}" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">收件地址</text>
+          <textarea class="form-textarea" placeholder="用于寄送采血包" data-field="address" bindinput="onApplyInput" value="{{applyForm.address}}" />
+        </view>
+      </scroll-view>
+      <button class="apply-submit-btn" bindtap="submitApply" loading="{{submitting}}">
+        提交申请
+      </button>
+    </view>
+  </view>
+
+</view>

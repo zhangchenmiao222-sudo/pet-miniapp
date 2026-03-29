@@ -1,51 +1,144 @@
-.page { background: #0F1923; min-height: 100vh; color: #fff; }
-.nav-bar { display: flex; align-items: center; justify-content: center; padding: 100rpx 32rpx 24rpx; }
-.nav-title { font-size: 34rpx; font-weight: bold; color: #fff; }
-.content { padding: 0 32rpx 80rpx; }
+.page { background: #0F1923; min-height: 100vh; color: #fff; padding-bottom: env(safe-area-inset-bottom); }
 
-/* 用户信息卡片 */
-.user-card { display: flex; align-items: center; background: rgba(59,125,216,0.15); border-radius: 16rpx; padding: 40rpx; margin-bottom: 24rpx; }
-.avatar-wrap { margin-right: 28rpx; }
-.avatar { width: 120rpx; height: 120rpx; border-radius: 50%; }
-.avatar-placeholder { width: 120rpx; height: 120rpx; border-radius: 50%; background: #3B7DD8; display: flex; align-items: center; justify-content: center; }
-.avatar-text { font-size: 44rpx; color: #fff; font-weight: bold; }
-.user-info { flex: 1; }
-.user-name { display: block; font-size: 36rpx; font-weight: bold; color: #fff; margin-bottom: 12rpx; }
-.member-badge { display: inline-block; background: #3B7DD8; color: #fff; font-size: 22rpx; padding: 4rpx 16rpx; border-radius: 6rpx; margin-right: 12rpx; }
+/* 导航栏 */
+.nav-bar { display: flex; align-items: center; justify-content: center; padding: 88rpx 32rpx 24rpx; }
+.nav-title { font-size: 34rpx; font-weight: 700; color: #fff; }
+
+/* 未登录 */
+.not-login { display: flex; flex-direction: column; align-items: center; padding: 120rpx 40rpx; }
+.not-login-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.not-login-title { font-size: 36rpx; font-weight: 700; color: #fff; margin-bottom: 12rpx; }
+.not-login-desc { font-size: 26rpx; color: #8899AA; margin-bottom: 48rpx; }
+.login-btn { background: linear-gradient(135deg, #22d3ee, #3B66F5); border-radius: 44rpx; padding: 24rpx 80rpx; }
+.login-btn-text { color: #fff; font-size: 30rpx; font-weight: 700; }
+
+.content { padding: 0 24rpx 40rpx; }
+
+/* ========== 用户英雄区 ========== */
+.user-hero { position: relative; border-radius: 28rpx; overflow: hidden; margin-bottom: 20rpx; }
+.user-hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(34,211,238,0.12) 0%, rgba(59,102,245,0.12) 100%); }
+.user-hero-content { position: relative; display: flex; align-items: center; padding: 40rpx 32rpx; }
+
+.avatar-wrap { position: relative; margin-right: 28rpx; flex-shrink: 0; }
+.avatar { width: 128rpx; height: 128rpx; border-radius: 50%; border: 4rpx solid rgba(34,211,238,0.3); }
+.avatar-placeholder { width: 128rpx; height: 128rpx; border-radius: 50%; background: rgba(34,211,238,0.15); border: 4rpx solid rgba(34,211,238,0.3); display: flex; align-items: center; justify-content: center; }
+.avatar-emoji { font-size: 52rpx; }
+.avatar-edit-badge { position: absolute; bottom: 0; right: 0; width: 40rpx; height: 40rpx; background: #22d3ee; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3rpx solid #0F1923; }
+.avatar-edit-icon { font-size: 20rpx; }
+
+.user-meta { flex: 1; }
+.user-name-row { display: flex; align-items: center; gap: 12rpx; margin-bottom: 12rpx; }
+.user-name { font-size: 38rpx; font-weight: 700; color: #fff; }
+.user-name-edit { font-size: 28rpx; color: rgba(255,255,255,0.4); }
+
+.member-badge-row { margin-bottom: 8rpx; }
+.member-badge { display: inline-flex; align-items: center; gap: 6rpx; padding: 6rpx 18rpx; border-radius: 20rpx; }
+.member-badge.active { background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(234,179,8,0.2)); }
+.member-badge.inactive { background: rgba(255,255,255,0.08); }
+.member-badge-icon { font-size: 22rpx; }
+.member-badge-text { font-size: 22rpx; color: #F59E0B; font-weight: 600; }
+.member-badge.inactive .member-badge-text { color: rgba(255,255,255,0.5); }
+.member-badge-arrow { font-size: 22rpx; color: rgba(255,255,255,0.3); }
 .member-expire { font-size: 22rpx; color: #8899AA; }
-.no-member { font-size: 24rpx; color: #8899AA; }
 
-/* 通用卡片 */
-.section-card { background: rgba(255,255,255,0.05); border-radius: 16rpx; padding: 32rpx; margin-bottom: 24rpx; }
-.section-header { margin-bottom: 20rpx; }
-.section-title { font-size: 28rpx; color: #8899AA; font-weight: bold; }
+/* ========== 邀请快捷入口 ========== */
+.quick-stats { display: flex; align-items: center; background: rgba(255,255,255,0.04); border: 1rpx solid rgba(255,255,255,0.08); border-radius: 20rpx; padding: 28rpx 24rpx; margin-bottom: 20rpx; }
+.quick-stat-item { flex: 1; text-align: center; }
+.quick-stat-num { display: block; font-size: 40rpx; font-weight: 700; color: #22d3ee; font-family: monospace; }
+.quick-stat-label { display: block; font-size: 22rpx; color: #8899AA; margin-top: 4rpx; }
+.quick-stat-sep { width: 1rpx; height: 56rpx; background: rgba(255,255,255,0.1); }
+.quick-stat-arrow { margin-left: 16rpx; }
+.quick-stat-arrow-text { font-size: 22rpx; color: rgba(255,255,255,0.4); white-space: nowrap; }
 
-/* 宠物信息 */
-.pet-info-row { display: flex; align-items: center; }
-.pet-detail { flex: 1; }
-.pet-name { display: block; font-size: 36rpx; font-weight: bold; color: #fff; margin-bottom: 8rpx; }
-.pet-basic { display: block; font-size: 26rpx; color: #CDD6E0; margin-bottom: 6rpx; }
-.pet-no { display: block; font-size: 22rpx; color: #8899AA; }
-.pet-tags { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 20rpx; }
-.tag { background: rgba(59,125,216,0.2); color: #3B7DD8; font-size: 22rpx; padding: 6rpx 18rpx; border-radius: 20rpx; }
+/* ========== 通用卡片 ========== */
+.section-card { background: rgba(255,255,255,0.04); border: 1rpx solid rgba(255,255,255,0.08); border-radius: 24rpx; padding: 28rpx; margin-bottom: 20rpx; }
+.section-header { display: flex; align-items: center; margin-bottom: 24rpx; }
+.section-icon { font-size: 28rpx; margin-right: 10rpx; }
+.section-title { font-size: 30rpx; font-weight: 700; color: #fff; flex: 1; }
+.section-action { padding: 6rpx 16rpx; background: rgba(34,211,238,0.1); border-radius: 16rpx; }
+.section-action-text { font-size: 22rpx; color: #22d3ee; font-weight: 600; }
 
-/* 会员推广 */
-.member-promo { text-align: center; }
-.promo-title { display: block; font-size: 32rpx; font-weight: bold; color: #fff; margin-bottom: 12rpx; }
-.promo-desc { display: block; font-size: 24rpx; color: #8899AA; margin-bottom: 28rpx; }
-.promo-btn { display: inline-block; background: #3B7DD8; color: #fff; font-size: 28rpx; padding: 16rpx 60rpx; border-radius: 40rpx; font-weight: bold; }
+/* ========== 宠物照片区 ========== */
+.pet-photo-area { margin-bottom: 24rpx; }
+.pet-main-photo { position: relative; width: 100%; height: 360rpx; border-radius: 20rpx; overflow: hidden; }
+.pet-photo-img { width: 100%; height: 100%; }
+.pet-photo-empty { width: 100%; height: 100%; background: rgba(255,255,255,0.04); border: 2rpx dashed rgba(255,255,255,0.15); border-radius: 20rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.pet-photo-empty-icon { font-size: 56rpx; margin-bottom: 12rpx; }
+.pet-photo-empty-text { font-size: 24rpx; color: rgba(255,255,255,0.4); }
+.pet-photo-edit { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.6)); padding: 24rpx 20rpx 16rpx; }
+.pet-photo-edit-text { font-size: 22rpx; color: rgba(255,255,255,0.8); }
 
-/* 菜单列表 */
+.pet-photo-thumbs { display: flex; gap: 12rpx; margin-top: 12rpx; }
+.pet-thumb { width: 120rpx; height: 120rpx; border-radius: 12rpx; }
+.pet-thumb-add { width: 120rpx; height: 120rpx; border-radius: 12rpx; background: rgba(255,255,255,0.04); border: 2rpx dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
+.pet-thumb-add-icon { font-size: 40rpx; color: rgba(255,255,255,0.3); }
+
+/* ========== 宠物信息 ========== */
+.pet-info-section {}
+.pet-name-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16rpx; }
+.pet-name { font-size: 36rpx; font-weight: 700; color: #fff; }
+.pet-no { font-size: 22rpx; color: #8899AA; font-family: monospace; }
+
+.pet-detail-grid { display: flex; gap: 16rpx; margin-bottom: 16rpx; }
+.pet-detail-item { flex: 1; background: rgba(255,255,255,0.04); border-radius: 16rpx; padding: 16rpx; text-align: center; }
+.pet-detail-label { display: block; font-size: 22rpx; color: #8899AA; margin-bottom: 6rpx; }
+.pet-detail-value { display: block; font-size: 28rpx; font-weight: 600; color: #fff; }
+
+.pet-tags { display: flex; flex-wrap: wrap; gap: 12rpx; margin-bottom: 16rpx; }
+.pet-tag { background: rgba(34,211,238,0.12); color: #22d3ee; font-size: 22rpx; padding: 6rpx 18rpx; border-radius: 20rpx; font-weight: 600; }
+
+.pet-checkup { display: flex; align-items: center; gap: 8rpx; background: rgba(34,197,94,0.08); border-radius: 12rpx; padding: 14rpx 16rpx; }
+.pet-checkup-icon { font-size: 22rpx; }
+.pet-checkup-text { font-size: 22rpx; color: rgba(255,255,255,0.6); }
+
+/* 无宠物 */
+.no-pet-card { text-align: center; padding: 48rpx; }
+.no-pet-icon { font-size: 64rpx; display: block; margin-bottom: 16rpx; }
+.no-pet-text { font-size: 30rpx; color: rgba(255,255,255,0.7); font-weight: 600; display: block; }
+.no-pet-desc { font-size: 24rpx; color: rgba(255,255,255,0.4); display: block; margin-top: 8rpx; }
+
+/* ========== 功能菜单 ========== */
 .menu-card { padding: 0; }
-.menu-item { display: flex; justify-content: space-between; align-items: center; padding: 32rpx; border-bottom: 1rpx solid rgba(255,255,255,0.06); }
+.menu-item { display: flex; justify-content: space-between; align-items: center; padding: 28rpx; border-bottom: 1rpx solid rgba(255,255,255,0.06); }
 .menu-item:last-child { border-bottom: none; }
-.menu-text { font-size: 30rpx; color: #fff; }
-.menu-arrow { font-size: 32rpx; color: #8899AA; }
-.menu-item.logout .menu-text { color: #EF4444; }
+.menu-item-left { display: flex; align-items: center; gap: 16rpx; }
+.menu-icon { font-size: 28rpx; }
+.menu-text { font-size: 30rpx; color: #fff; font-weight: 500; }
+.menu-item-right { display: flex; align-items: center; gap: 8rpx; }
+.menu-badge { background: #EF4444; color: #fff; font-size: 20rpx; min-width: 32rpx; height: 32rpx; line-height: 32rpx; text-align: center; border-radius: 16rpx; padding: 0 8rpx; }
+.menu-arrow { font-size: 32rpx; color: rgba(255,255,255,0.3); }
+
+/* 退出登录 */
+.logout-btn { text-align: center; padding: 28rpx; margin-top: 16rpx; }
+.logout-text { font-size: 28rpx; color: #EF4444; font-weight: 600; }
 
 /* 底部 */
-.page-bottom { text-align: center; padding: 40rpx 0; }
-.footer-text { font-size: 22rpx; color: #8899AA; }
+.page-footer { text-align: center; padding: 40rpx 0 20rpx; }
+.footer-text { font-size: 22rpx; color: #8899AA; display: block; }
+.footer-version { font-size: 20rpx; color: rgba(136,153,170,0.5); display: block; margin-top: 4rpx; }
 
-.loading-wrap { padding: 200rpx 0; text-align: center; }
+/* 加载 */
+.loading-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 200rpx 0; }
+.loading-spinner { width: 48rpx; height: 48rpx; border: 4rpx solid rgba(34,211,238,0.3); border-top-color: #22d3ee; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16rpx; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { color: #8899AA; font-size: 28rpx; }
+
+/* ========== 编辑弹窗 ========== */
+.edit-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.65); z-index: 200; display: flex; align-items: center; justify-content: center; }
+.edit-modal { width: 80%; max-width: 620rpx; background: #1A2740; border-radius: 28rpx; overflow: hidden; }
+.pet-edit-modal { max-height: 80vh; display: flex; flex-direction: column; }
+.edit-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 28rpx 32rpx; border-bottom: 1rpx solid rgba(255,255,255,0.08); }
+.edit-modal-title { font-size: 32rpx; font-weight: 700; color: #fff; }
+.edit-modal-close { font-size: 36rpx; color: rgba(255,255,255,0.4); padding: 8rpx; }
+.edit-modal-body { padding: 28rpx 32rpx; flex: 1; overflow-y: auto; }
+.edit-input { background: rgba(255,255,255,0.06); border: 1rpx solid rgba(255,255,255,0.12); border-radius: 16rpx; padding: 20rpx 24rpx; color: #fff; font-size: 28rpx; width: 100%; box-sizing: border-box; }
+.edit-textarea { background: rgba(255,255,255,0.06); border: 1rpx solid rgba(255,255,255,0.12); border-radius: 16rpx; padding: 20rpx 24rpx; color: #fff; font-size: 28rpx; width: 100%; height: 120rpx; box-sizing: border-box; }
+
+.form-group { margin-bottom: 24rpx; }
+.form-group.half { flex: 1; }
+.form-row { display: flex; gap: 20rpx; }
+.form-label { display: block; font-size: 26rpx; color: rgba(255,255,255,0.6); margin-bottom: 12rpx; }
+
+.edit-modal-footer { display: flex; border-top: 1rpx solid rgba(255,255,255,0.08); }
+.edit-btn-cancel { flex: 1; text-align: center; padding: 28rpx 0; font-size: 30rpx; color: rgba(255,255,255,0.5); }
+.edit-btn-save { flex: 1; text-align: center; padding: 28rpx 0; font-size: 30rpx; color: #22d3ee; font-weight: 700; border-left: 1rpx solid rgba(255,255,255,0.08); }
