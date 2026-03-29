@@ -306,6 +306,13 @@ Page({
   drawInviteCard() {
     const { pet } = this.data
     const petName = pet ? pet.name : '狗狗'
+    // 尝试加载狗狗头像
+    let petPhoto = ''
+    if (pet && pet.photo_urls) {
+      const urls = typeof pet.photo_urls === 'string' ? JSON.parse(pet.photo_urls || '[]') : pet.photo_urls
+      if (Array.isArray(urls) && urls.length > 0) petPhoto = urls[0]
+    }
+
     const query = wx.createSelectorQuery().in(this)
     query.select('#inviteCanvas')
       .fields({ node: true, size: true })
@@ -319,227 +326,296 @@ Page({
         canvas.width = w * dpr
         canvas.height = h * dpr
         ctx.scale(dpr, dpr)
-        const pad = 20 // 内边距
 
-        // ===== 背景 =====
-        const grad = ctx.createLinearGradient(0, 0, w, h)
-        grad.addColorStop(0, '#0f172a')
-        grad.addColorStop(1, '#020617')
-        ctx.fillStyle = grad
-        ctx.fillRect(0, 0, w, h)
+        const doRender = (avatarImg) => {
+          const P = 24 // padding
 
-        // 右上角蓝色光晕
-        const g1 = ctx.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.45)
-        g1.addColorStop(0, 'rgba(59,130,246,0.12)')
-        g1.addColorStop(1, 'transparent')
-        ctx.fillStyle = g1
-        ctx.fillRect(0, 0, w, h)
+          // ===== 背景渐变 =====
+          const bg = ctx.createLinearGradient(0, 0, w, h)
+          bg.addColorStop(0, '#0f172a')
+          bg.addColorStop(1, '#020617')
+          ctx.fillStyle = bg
+          ctx.fillRect(0, 0, w, h)
 
-        // 左下角青色光晕
-        const g2 = ctx.createRadialGradient(w * 0.15, h * 0.85, 0, w * 0.15, h * 0.85, w * 0.4)
-        g2.addColorStop(0, 'rgba(34,211,238,0.1)')
-        g2.addColorStop(1, 'transparent')
-        ctx.fillStyle = g2
-        ctx.fillRect(0, 0, w, h)
+          // 氛围光晕 - 右上蓝
+          const g1 = ctx.createRadialGradient(w * 0.82, h * 0.1, 0, w * 0.82, h * 0.1, 175)
+          g1.addColorStop(0, 'rgba(59,130,246,0.12)')
+          g1.addColorStop(1, 'rgba(59,130,246,0)')
+          ctx.fillStyle = g1
+          ctx.fillRect(0, 0, w, h)
 
-        // ===== 1. 头部区域 =====
-        // Special Gift 标签
-        this._roundRect(ctx, pad, pad, 90, 18, 4)
-        ctx.fillStyle = 'rgba(59,130,246,0.2)'
-        ctx.fill()
-        ctx.fillStyle = '#60a5fa'
-        ctx.font = 'bold 8px sans-serif'
-        ctx.fillText('SPECIAL GIFT', pad + 8, pad + 13)
+          // 氛围光晕 - 左下青
+          const g2 = ctx.createRadialGradient(w * 0.12, h * 0.9, 0, w * 0.12, h * 0.9, 175)
+          g2.addColorStop(0, 'rgba(34,211,238,0.10)')
+          g2.addColorStop(1, 'rgba(34,211,238,0)')
+          ctx.fillStyle = g2
+          ctx.fillRect(0, 0, w, h)
 
-        // 脉冲点
-        ctx.beginPath()
-        ctx.arc(pad + 100, pad + 9, 3, 0, Math.PI * 2)
-        ctx.fillStyle = '#22d3ee'
-        ctx.fill()
+          // 狗爪装饰 (半透明)
+          this._drawPaw(ctx, w * 0.38, h * 0.08, 22, 'rgba(255,255,255,0.035)', 12)
+          this._drawPaw(ctx, w * 0.82, h * 0.62, 14, 'rgba(255,255,255,0.03)', -12)
 
-        // 主标题
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold 17px sans-serif'
-        ctx.fillText(`${petName}主人为你申请了`, pad, pad + 48)
-        // 渐变色副标题
-        ctx.fillStyle = '#93c5fd'
-        ctx.font = 'bold 20px sans-serif'
-        ctx.fillText('一次免费深度体检名额', pad, pad + 74)
+          // ===== 1. 头部：Special Gift + 标题 + 狗狗头像 =====
+          // Special Gift 标签
+          this._roundRect(ctx, P, P, 100, 20, 4)
+          ctx.fillStyle = 'rgba(59,130,246,0.2)'
+          ctx.fill()
+          // 标签内狗爪小图标
+          this._drawPaw(ctx, P + 10, P + 10, 5, '#60a5fa', 0)
+          ctx.fillStyle = '#60a5fa'
+          ctx.font = '900 9px sans-serif'
+          ctx.fillText('SPECIAL GIFT', P + 20, P + 14)
 
-        // 右上角 狗狗头像圆圈
-        const avatarX = w - pad - 50
-        const avatarY = pad + 30
-        const avatarR = 25
-        // 外环
-        ctx.beginPath()
-        ctx.arc(avatarX, avatarY, avatarR + 4, 0, Math.PI * 2)
-        ctx.strokeStyle = 'rgba(34,211,238,0.3)'
-        ctx.lineWidth = 1
-        ctx.stroke()
-        // 内圈背景
-        ctx.beginPath()
-        ctx.arc(avatarX, avatarY, avatarR, 0, Math.PI * 2)
-        ctx.fillStyle = '#1e293b'
-        ctx.fill()
-        ctx.strokeStyle = 'rgba(255,255,255,0.2)'
-        ctx.lineWidth = 1.5
-        ctx.stroke()
-        // 头像文字
-        ctx.fillStyle = 'rgba(255,255,255,0.6)'
-        ctx.font = 'bold 11px sans-serif'
-        ctx.textAlign = 'center'
-        ctx.fillText(petName.slice(0, 2), avatarX, avatarY + 4)
-        ctx.textAlign = 'left'
+          // 脉冲圆点
+          ctx.beginPath()
+          ctx.arc(P + 110, P + 10, 3, 0, Math.PI * 2)
+          ctx.fillStyle = '#22d3ee'
+          ctx.fill()
+          // 光晕
+          ctx.beginPath()
+          ctx.arc(P + 110, P + 10, 6, 0, Math.PI * 2)
+          ctx.fillStyle = 'rgba(34,211,238,0.2)'
+          ctx.fill()
 
-        // ===== 2. 中间区域 =====
-        const midY = pad + 95
-        const midH = h - midY - 85 // 留出底部空间
-        const leftW = (w - pad * 2 - 12) * 0.55
-        const rightW = (w - pad * 2 - 12) * 0.45
+          // 主标题
+          ctx.fillStyle = '#FFFFFF'
+          ctx.font = 'bold 18px sans-serif'
+          ctx.fillText(`${petName}主人为你申请了`, P, P + 50)
 
-        // 左上: 15P 深度代谢报告
-        const card1W = (leftW - 8) / 2
-        const card1H = 52
-        // 卡片1
-        this._roundRect(ctx, pad, midY, card1W, card1H, 10)
-        ctx.fillStyle = 'rgba(255,255,255,0.04)'
-        ctx.fill()
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)'
-        ctx.lineWidth = 0.5
-        ctx.stroke()
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold italic 20px sans-serif'
-        ctx.fillText('15P', pad + 14, midY + 26)
-        ctx.fillStyle = '#64748b'
-        ctx.font = 'bold 7px sans-serif'
-        ctx.fillText('深度代谢报告', pad + 10, midY + 42)
+          // 渐变副标题
+          const titleGrad = ctx.createLinearGradient(P, 0, P + 220, 0)
+          titleGrad.addColorStop(0, '#93c5fd')
+          titleGrad.addColorStop(1, '#a5f3fc')
+          ctx.fillStyle = titleGrad
+          ctx.font = 'bold 21px sans-serif'
+          ctx.fillText('一次免费深度体检名额', P, P + 78)
 
-        // 卡片2
-        const card2X = pad + card1W + 8
-        this._roundRect(ctx, card2X, midY, card1W, card1H, 10)
-        ctx.fillStyle = 'rgba(255,255,255,0.04)'
-        ctx.fill()
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)'
-        ctx.lineWidth = 0.5
-        ctx.stroke()
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold italic 20px sans-serif'
-        ctx.fillText('1:1', card2X + 14, midY + 26)
-        ctx.fillStyle = '#64748b'
-        ctx.font = 'bold 7px sans-serif'
-        ctx.fillText('定制健康方案', card2X + 10, midY + 42)
+          // 右上角狗狗头像
+          const avatarCx = w - P - 32
+          const avatarCy = P + 36
+          const avatarR = 28
 
-        // 左下：两行说明
-        const descY = midY + card1H + 8
-        const descH = midH - card1H - 8
-        this._roundRect(ctx, pad, descY, leftW, descH, 10)
-        ctx.fillStyle = 'rgba(255,255,255,0.04)'
-        ctx.fill()
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)'
-        ctx.lineWidth = 0.5
-        ctx.stroke()
+          // 外环科技感
+          ctx.beginPath()
+          ctx.arc(avatarCx, avatarCy, avatarR + 5, 0, Math.PI * 2)
+          ctx.strokeStyle = 'rgba(34,211,238,0.3)'
+          ctx.lineWidth = 1
+          ctx.stroke()
 
-        ctx.fillStyle = '#60a5fa'
-        ctx.font = '10px sans-serif'
-        ctx.fillText('🐾', pad + 12, descY + 22)
-        ctx.fillStyle = '#cbd5e1'
-        ctx.font = '10px sans-serif'
-        ctx.fillText('解析血液数据，看透它无法言说的需求', pad + 28, descY + 22)
+          // 头像裁圆
+          ctx.save()
+          ctx.beginPath()
+          ctx.arc(avatarCx, avatarCy, avatarR, 0, Math.PI * 2)
+          ctx.clip()
+          if (avatarImg) {
+            ctx.drawImage(avatarImg, avatarCx - avatarR, avatarCy - avatarR, avatarR * 2, avatarR * 2)
+          } else {
+            ctx.fillStyle = '#1e293b'
+            ctx.fillRect(avatarCx - avatarR, avatarCy - avatarR, avatarR * 2, avatarR * 2)
+            ctx.fillStyle = 'rgba(255,255,255,0.5)'
+            ctx.font = 'bold 14px sans-serif'
+            ctx.textAlign = 'center'
+            ctx.fillText(petName.slice(0, 2), avatarCx, avatarCy + 5)
+            ctx.textAlign = 'left'
+          }
+          ctx.restore()
 
-        ctx.fillStyle = '#60a5fa'
-        ctx.fillText('🐾', pad + 12, descY + 44)
-        ctx.fillStyle = '#cbd5e1'
-        ctx.fillText('科学营养配比，生成专属定制食谱', pad + 28, descY + 44)
+          // 头像白边
+          ctx.beginPath()
+          ctx.arc(avatarCx, avatarCy, avatarR, 0, Math.PI * 2)
+          ctx.strokeStyle = 'rgba(255,255,255,0.2)'
+          ctx.lineWidth = 1.5
+          ctx.stroke()
 
-        // 右侧：好友寄语气泡
-        const rightX = pad + leftW + 12
-        this._roundRect(ctx, rightX, midY, rightW, midH, 10)
-        ctx.fillStyle = 'rgba(255,255,255,0.04)'
-        ctx.fill()
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)'
-        ctx.lineWidth = 0.5
-        ctx.stroke()
+          // ===== 2. 中间：价值卡片 + 寄语 =====
+          const midY = P + 100
+          const midH = h - midY - 82
+          const gapX = 12
+          const leftW = (w - P * 2 - gapX) * 0.55
+          const rightW = (w - P * 2 - gapX) * 0.45
 
-        // 引号装饰
-        ctx.fillStyle = 'rgba(255,255,255,0.06)'
-        ctx.font = 'bold 36px serif'
-        ctx.fillText('"', rightX + 8, midY + 32)
+          // -- 左上两个数据卡片 --
+          const card1W = (leftW - 8) / 2
+          const card1H = 55
 
-        // 寄语文字
-        ctx.fillStyle = 'rgba(186,207,247,0.9)'
-        ctx.font = '10px sans-serif'
-        const quoteLines = this._wrapText(ctx,
-          `"懂它，从数据开始。我已为${petName}定制了专属粮，现在把这份专业关爱分享给你。"`,
-          rightW - 24
-        )
-        quoteLines.forEach((line, i) => {
-          ctx.fillText(line, rightX + 12, midY + 50 + i * 16)
-        })
+          // 卡片1: 15P
+          this._glassCard(ctx, P, midY, card1W, card1H, 12)
+          // 卡片内爪印装饰
+          this._drawPaw(ctx, P + card1W - 10, midY + card1H - 10, 10, 'rgba(59,130,246,0.15)', 0)
+          ctx.fillStyle = '#FFFFFF'
+          ctx.font = '900 italic 22px sans-serif'
+          ctx.fillText('15P', P + 14, midY + 28)
+          ctx.fillStyle = '#64748b'
+          ctx.font = 'bold 8px sans-serif'
+          ctx.fillText('深度代谢报告', P + 10, midY + 44)
 
-        // ===== 3. 底部区域 =====
-        const btmY = h - 72
+          // 卡片2: 1:1
+          const c2x = P + card1W + 8
+          this._glassCard(ctx, c2x, midY, card1W, card1H, 12)
+          this._drawPaw(ctx, c2x + card1W - 10, midY + card1H - 10, 10, 'rgba(59,130,246,0.15)', 0)
+          ctx.fillStyle = '#FFFFFF'
+          ctx.font = '900 italic 22px sans-serif'
+          ctx.fillText('1:1', c2x + 14, midY + 28)
+          ctx.fillStyle = '#64748b'
+          ctx.font = 'bold 8px sans-serif'
+          ctx.fillText('定制健康方案', c2x + 10, midY + 44)
 
-        // 左侧：你知道吗
-        const btmLeftW = (w - pad * 2 - 12) * 0.55
-        this._roundRect(ctx, pad, btmY, btmLeftW, 58, 10)
-        ctx.fillStyle = 'rgba(59,130,246,0.1)'
-        ctx.fill()
-        ctx.strokeStyle = 'rgba(59,130,246,0.2)'
-        ctx.lineWidth = 0.5
-        ctx.stroke()
+          // -- 左下说明面板 --
+          const descY = midY + card1H + 8
+          const descH = midH - card1H - 8
+          this._glassCard(ctx, P, descY, leftW, descH, 12)
 
-        // 脉冲小点 + "你知道吗？"
-        ctx.beginPath()
-        ctx.arc(pad + 10, btmY + 14, 2.5, 0, Math.PI * 2)
-        ctx.fillStyle = '#22d3ee'
-        ctx.fill()
-        ctx.fillStyle = '#60a5fa'
-        ctx.font = 'bold 7px sans-serif'
-        ctx.fillText('你知道吗？', pad + 18, btmY + 17)
-
-        ctx.fillStyle = '#94a3b8'
-        ctx.font = '8px sans-serif'
-        const tipLines = this._wrapText(ctx,
-          '90%的代谢异常在显症前已存在。它的身体得分及格了吗？领用特权看真相。',
-          btmLeftW - 20
-        )
-        tipLines.forEach((line, i) => {
-          ctx.fillText(line, pad + 10, btmY + 32 + i * 12)
-        })
-
-        // 右侧：立即免费领用按钮
-        const btnX = pad + btmLeftW + 12
-        const btnW = w - btnX - pad
-        const btnGrad = ctx.createLinearGradient(btnX, btmY, btnX + btnW, btmY)
-        btnGrad.addColorStop(0, '#2563eb')
-        btnGrad.addColorStop(1, '#0891b2')
-        this._roundRect(ctx, btnX, btmY, btnW, 38, 12)
-        ctx.fillStyle = btnGrad
-        ctx.fill()
-
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = 'bold 11px sans-serif'
-        ctx.textAlign = 'center'
-        ctx.fillText('立即免费领用  →', btnX + btnW / 2, btmY + 24)
-
-        // 副文字
-        ctx.fillStyle = '#475569'
-        ctx.font = 'bold 6px sans-serif'
-        ctx.fillText('好友专享 · 限额领取', btnX + btnW / 2, btmY + 52)
-        ctx.textAlign = 'left'
-
-        this._inviteCanvas = canvas
-
-        // 绘制完成后立即生成临时图片用于分享封面
-        setTimeout(() => {
-          wx.canvasToTempFilePath({
-            canvas,
-            success: (tempRes) => {
-              this._inviteCardImage = tempRes.tempFilePath
-            }
+          // 两行文字带爪印图标
+          const lines = [
+            '解析血液数据，看透它无法言说的需求',
+            '科学营养配比，生成它的专属定制食谱'
+          ]
+          lines.forEach((txt, i) => {
+            const ly = descY + 22 + i * 24
+            this._drawPaw(ctx, P + 15, ly, 5.5, '#60a5fa', 0)
+            ctx.fillStyle = '#cbd5e1'
+            ctx.font = '11px sans-serif'
+            ctx.fillText(txt, P + 28, ly + 4)
           })
-        }, 100)
+
+          // -- 右侧寄语气泡 --
+          const rightX = P + leftW + gapX
+          this._glassCard(ctx, rightX, midY, rightW, midH, 12)
+
+          // 大引号装饰
+          ctx.fillStyle = 'rgba(255,255,255,0.06)'
+          ctx.font = 'bold 40px serif'
+          ctx.fillText('\u201C', rightX + 10, midY + 36)
+
+          // 寄语文字
+          ctx.fillStyle = 'rgba(191,219,254,0.9)'
+          ctx.font = 'italic 11px sans-serif'
+          const quoteLines = this._wrapText(ctx,
+            `\u201C懂它，从数据开始。我已为${petName}定制了专属粮，现在把这份专业关爱分享给你。\u201D`,
+            rightW - 28
+          )
+          quoteLines.forEach((line, i) => {
+            ctx.fillText(line, rightX + 14, midY + 56 + i * 17)
+          })
+
+          // ===== 3. 底部：钩子 + 按钮 =====
+          const btmY = h - 68
+          const btmLeftW = (w - P * 2 - gapX) * 0.6
+
+          // 左侧「你知道吗」面板
+          this._roundRect(ctx, P, btmY, btmLeftW, 56, 12)
+          ctx.fillStyle = 'rgba(59,130,246,0.1)'
+          ctx.fill()
+          ctx.strokeStyle = 'rgba(59,130,246,0.2)'
+          ctx.lineWidth = 0.5
+          ctx.stroke()
+
+          // 脉冲点 + 标题
+          ctx.beginPath()
+          ctx.arc(P + 12, btmY + 15, 3, 0, Math.PI * 2)
+          ctx.fillStyle = '#22d3ee'
+          ctx.fill()
+          // 光晕
+          ctx.beginPath()
+          ctx.arc(P + 12, btmY + 15, 5, 0, Math.PI * 2)
+          ctx.fillStyle = 'rgba(34,211,238,0.15)'
+          ctx.fill()
+          ctx.fillStyle = '#60a5fa'
+          ctx.font = '900 8px sans-serif'
+          ctx.fillText('你知道吗？', P + 22, btmY + 18)
+
+          ctx.fillStyle = '#94a3b8'
+          ctx.font = '9px sans-serif'
+          const tipLines = this._wrapText(ctx,
+            '90%的代谢异常在显症前已存在。它的身体得分及格了吗？领用特权看真相。',
+            btmLeftW - 24
+          )
+          tipLines.forEach((line, i) => {
+            ctx.fillText(line, P + 12, btmY + 34 + i * 13)
+          })
+
+          // 右侧：渐变按钮
+          const btnX = P + btmLeftW + gapX
+          const btnW = w - btnX - P
+          const btnGrad = ctx.createLinearGradient(btnX, btmY, btnX + btnW, btmY)
+          btnGrad.addColorStop(0, '#2563eb')
+          btnGrad.addColorStop(1, '#0891b2')
+
+          // 按钮阴影
+          this._roundRect(ctx, btnX, btmY + 2, btnW, 38, 14)
+          ctx.fillStyle = 'rgba(37,99,235,0.3)'
+          ctx.fill()
+
+          // 按钮主体
+          this._roundRect(ctx, btnX, btmY, btnW, 38, 14)
+          ctx.fillStyle = btnGrad
+          ctx.fill()
+
+          ctx.fillStyle = '#FFFFFF'
+          ctx.font = 'bold 12px sans-serif'
+          ctx.textAlign = 'center'
+          ctx.fillText('立即免费领用  →', btnX + btnW / 2, btmY + 24)
+
+          // 副文字
+          ctx.fillStyle = '#475569'
+          ctx.font = 'bold 7px sans-serif'
+          ctx.letterSpacing = '2px'
+          ctx.fillText('好友专享 · 限额领取', btnX + btnW / 2, btmY + 52)
+          ctx.textAlign = 'left'
+
+          // 保存引用
+          this._inviteCanvas = canvas
+          setTimeout(() => {
+            wx.canvasToTempFilePath({
+              canvas,
+              success: (tempRes) => {
+                this._inviteCardImage = tempRes.tempFilePath
+              }
+            })
+          }, 100)
+        }
+
+        // 尝试加载头像图片，无论成功失败都绘制
+        if (petPhoto) {
+          const img = canvas.createImage()
+          img.onload = () => doRender(img)
+          img.onerror = () => doRender(null)
+          img.src = petPhoto
+        } else {
+          doRender(null)
+        }
       })
+  },
+
+  // 绘制狗爪图标
+  _drawPaw(ctx, cx, cy, size, color, rotation) {
+    ctx.save()
+    ctx.translate(cx, cy)
+    if (rotation) ctx.rotate(rotation * Math.PI / 180)
+    ctx.fillStyle = color
+    const s = size / 12
+    // 主掌
+    ctx.beginPath()
+    ctx.ellipse(0, 2 * s, 6 * s, 5 * s, 0, 0, Math.PI * 2)
+    ctx.fill()
+    // 四个趾
+    const toes = [[-5 * s, -5 * s], [-1.5 * s, -7 * s], [1.5 * s, -7 * s], [5 * s, -5 * s]]
+    toes.forEach(([tx, ty]) => {
+      ctx.beginPath()
+      ctx.ellipse(tx, ty, 2.5 * s, 3 * s, 0, 0, Math.PI * 2)
+      ctx.fill()
+    })
+    ctx.restore()
+  },
+
+  // 玻璃拟态卡片
+  _glassCard(ctx, x, y, w, h, r) {
+    this._roundRect(ctx, x, y, w, h, r)
+    ctx.fillStyle = 'rgba(255,255,255,0.04)'
+    ctx.fill()
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)'
+    ctx.lineWidth = 0.5
+    ctx.stroke()
   },
 
   // 文字换行工具
