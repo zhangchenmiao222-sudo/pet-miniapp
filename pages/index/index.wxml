@@ -36,23 +36,42 @@
           <text class="member-tag-icon">👑</text>
           <text class="member-tag-text">{{pet.name || '会员'}} · {{memberInfo.member_type === 'month' ? '128¥' : memberInfo.member_type === 'quarter' ? '298¥' : '998¥'}}</text>
         </view>
-        <view class="member-tag-empty" wx:elif="{{pageState === 'live' && memberInfo && !memberInfo.is_active}}" bindtap="goMemberPage">
-          <text class="member-tag-text">开通会员</text>
-        </view>
+        <!-- 开通会员已移除 -->
       </view>
 
-      <!-- 宠物标签 -->
+      <!-- 宠物标签 + 切换 -->
       <view class="pet-tags" wx:if="{{pet}}">
-        <view class="pet-tag-pill">{{pet.name}} · {{pet.age_years}}岁</view>
+        <view class="pet-tag-pill" bindtap="togglePetPicker">
+          <text>{{pet.name}} · {{pet.age_years}}岁</text>
+          <text class="pet-switch-arrow"> ▾</text>
+        </view>
         <view class="pet-tag-id">NO. {{pet.pet_no}}</view>
+      </view>
+      <!-- 宠物切换下拉 -->
+      <view class="pet-picker-mask" wx:if="{{showPetPicker}}" bindtap="togglePetPicker">
+        <view class="pet-picker-dropdown" catchtap="">
+          <view class="pet-picker-title">我的宠物</view>
+          <view class="pet-picker-item {{item.id === pet.id ? 'active' : ''}}"
+                wx:for="{{petList}}" wx:key="id"
+                bindtap="onSwitchPet" data-index="{{index}}">
+            <text class="pet-picker-name">{{item.name}}</text>
+            <text class="pet-picker-info">{{item.breed}} · {{item.age_years}}岁</text>
+            <text class="pet-picker-check" wx:if="{{item.id === pet.id}}">✓</text>
+          </view>
+          <view class="pet-picker-divider"></view>
+          <view class="pet-picker-add" bindtap="onAddNewPet">
+            <text class="pet-picker-add-icon">＋</text>
+            <text class="pet-picker-add-text">添加新宠物</text>
+          </view>
+        </view>
       </view>
 
       <!-- 宠物名称与信息 -->
       <view class="pet-identity" wx:if="{{pet}}">
-        <view class="share-btn" bindtap="onShareCard">
+        <button class="share-btn" open-type="share" plain="true">
           <text class="share-btn-icon">↗</text>
           <text class="share-btn-text">分享档案</text>
-        </view>
+        </button>
         <text class="pet-name">{{pet.name}}</text>
         <text class="pet-info">{{pet.breed}} · {{pet.age_years}}岁 · {{pet.weight_kg}}kg</text>
         <view class="pet-status">
@@ -244,24 +263,33 @@
               <text class="meal-count-tag">分 {{dailyCare.meals_count}} 餐</text>
             </view>
             <view class="meal-grid">
-              <view class="meal-item done">
-                <view class="meal-check green">✓</view>
+              <view class="meal-item {{dailyCare.meat_fed ? 'done' : ''}}" bindtap="onFeedMeal" data-type="meat">
+                <view class="meal-check {{dailyCare.meat_fed ? 'green' : 'pending'}}">
+                  <text wx:if="{{dailyCare.meat_fed}}">✓</text>
+                  <view wx:else class="meal-pending-dot"></view>
+                </view>
                 <text class="meal-label">荤 食</text>
                 <view class="meal-value-row">
                   <text class="meal-num">{{dailyCare.meat_g}}</text>
                   <text class="meal-unit">g</text>
                 </view>
               </view>
-              <view class="meal-item">
-                <view class="meal-check pending"><view class="meal-pending-dot"></view></view>
+              <view class="meal-item {{dailyCare.middle_fed ? 'done' : ''}}" bindtap="onFeedMeal" data-type="middle">
+                <view class="meal-check {{dailyCare.middle_fed ? 'green' : 'pending'}}">
+                  <text wx:if="{{dailyCare.middle_fed}}">✓</text>
+                  <view wx:else class="meal-pending-dot"></view>
+                </view>
                 <text class="meal-label">中 食</text>
                 <view class="meal-value-row">
                   <text class="meal-num">{{dailyCare.middle_g}}</text>
                   <text class="meal-unit">g</text>
                 </view>
               </view>
-              <view class="meal-item">
-                <view class="meal-check pending"><view class="meal-pending-dot"></view></view>
+              <view class="meal-item {{dailyCare.veggie_fed ? 'done' : ''}}" bindtap="onFeedMeal" data-type="veggie">
+                <view class="meal-check {{dailyCare.veggie_fed ? 'green' : 'pending'}}">
+                  <text wx:if="{{dailyCare.veggie_fed}}">✓</text>
+                  <view wx:else class="meal-pending-dot"></view>
+                </view>
                 <text class="meal-label">蔬 食</text>
                 <view class="meal-value-row">
                   <text class="meal-num">{{dailyCare.veggie_g}}</text>
@@ -315,7 +343,7 @@
                 <text class="extra-tag-value">{{item.amount}}</text>
               </view>
             </view>
-            <view class="add-record-btn">
+            <view class="add-record-btn" bindtap="onAddExtraRecord">
               <text class="add-record-text">+ [ 添加记录 ]</text>
             </view>
           </view>
@@ -545,6 +573,9 @@
     <view class="pet-form-modal">
       <view class="pet-form-header">
         <text class="pet-form-title">填写宠物信息</text>
+        <view class="pet-form-close" bindtap="closePetForm">✕</view>
+      </view>
+      <view class="pet-form-subtitle-row">
         <text class="pet-form-subtitle">完善信息后将为您的爱宠生成专属营养方案</text>
       </view>
       <view class="pet-form-body">
@@ -569,6 +600,29 @@
       </view>
       <button class="pet-form-submit" bindtap="submitPetForm" loading="{{formSubmitting}}">
         提交并解锁
+      </button>
+    </view>
+  </view>
+
+  <!-- ========== 额外记录添加弹窗 ========== -->
+  <view class="extra-form-mask" wx:if="{{showExtraForm}}" catchtouchmove="true">
+    <view class="extra-form-modal">
+      <view class="extra-form-header">
+        <text class="extra-form-title">添加额外记录</text>
+        <view class="extra-form-close" bindtap="closeExtraForm">✕</view>
+      </view>
+      <view class="extra-form-body">
+        <view class="extra-form-group">
+          <text class="extra-form-label">名称 *</text>
+          <input class="extra-form-input" placeholder="如：西梅花茶、蛋黄" data-field="name" bindinput="onExtraFormInput" value="{{extraForm.name}}" />
+        </view>
+        <view class="extra-form-group">
+          <text class="extra-form-label">用量</text>
+          <input class="extra-form-input" placeholder="如：30g、半个" data-field="amount" bindinput="onExtraFormInput" value="{{extraForm.amount}}" />
+        </view>
+      </view>
+      <button class="extra-form-submit" bindtap="submitExtraRecord" loading="{{extraSubmitting}}">
+        确认添加
       </button>
     </view>
   </view>

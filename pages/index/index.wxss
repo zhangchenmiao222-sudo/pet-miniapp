@@ -156,6 +156,99 @@
   letter-spacing: 1rpx;
 }
 
+/* --- 宠物切换 --- */
+.pet-switch-arrow {
+  font-size: 20rpx;
+  margin-left: 4rpx;
+}
+
+.pet-picker-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.3);
+}
+
+.pet-picker-dropdown {
+  position: absolute;
+  top: 280rpx;
+  left: 40rpx;
+  right: 40rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+.pet-picker-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+}
+
+.pet-picker-item:last-child {
+  border-bottom: none;
+}
+
+.pet-picker-item.active {
+  background: #eff6ff;
+}
+
+.pet-picker-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1e293b;
+  margin-right: 16rpx;
+}
+
+.pet-picker-info {
+  font-size: 22rpx;
+  color: #94a3b8;
+  flex: 1;
+}
+
+.pet-picker-check {
+  font-size: 28rpx;
+  color: #3b82f6;
+  font-weight: 900;
+}
+
+.pet-picker-title {
+  font-size: 24rpx;
+  color: #94a3b8;
+  font-weight: 700;
+  padding: 20rpx 32rpx 8rpx;
+}
+
+.pet-picker-divider {
+  height: 1rpx;
+  background: #f1f5f9;
+  margin: 0 32rpx;
+}
+
+.pet-picker-add {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  gap: 12rpx;
+}
+
+.pet-picker-add-icon {
+  font-size: 32rpx;
+  color: #3b82f6;
+  font-weight: 900;
+}
+
+.pet-picker-add-text {
+  font-size: 28rpx;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
 /* --- 宠物身份 --- */
 .pet-identity {
   position: relative;
@@ -1789,10 +1882,16 @@
   gap: 8rpx;
   background: rgba(255,255,255,0.15);
   backdrop-filter: blur(20px);
-  border: 1rpx solid rgba(255,255,255,0.25);
+  border: 1rpx solid rgba(255,255,255,0.25) !important;
   padding: 12rpx 24rpx;
   border-radius: 50rpx;
   z-index: 20;
+  line-height: normal;
+  margin: 0;
+  box-sizing: border-box;
+}
+.share-btn::after {
+  display: none;
 }
 
 .share-btn-icon {
@@ -2562,23 +2661,34 @@
 }
 
 .pet-form-header {
-  text-align: center;
-  margin-bottom: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
 }
 
 .pet-form-title {
   font-size: 36rpx;
   font-weight: 900;
   color: #1A3A5F;
-  display: block;
-  margin-bottom: 12rpx;
+}
+
+.pet-form-close {
+  font-size: 40rpx;
+  color: #94a3b8;
+  padding: 8rpx 4rpx;
+  line-height: 1;
+}
+
+.pet-form-subtitle-row {
+  text-align: center;
+  margin-bottom: 32rpx;
 }
 
 .pet-form-subtitle {
   font-size: 24rpx;
   color: #94a3b8;
   font-weight: 600;
-  display: block;
 }
 
 .pet-form-body {
@@ -2623,6 +2733,86 @@
 }
 
 .pet-form-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #3B66F5, #22d3ee) !important;
+  color: #fff !important;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  padding: 24rpx 0;
+  border: none;
+  line-height: 1.4;
+}
+
+/* =====================================================
+   额外记录添加弹窗
+   ===================================================== */
+.extra-form-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.extra-form-modal {
+  width: 85%;
+  max-width: 640rpx;
+  background: #fff;
+  border-radius: 40rpx;
+  padding: 48rpx 40rpx 40rpx;
+  box-shadow: 0 40rpx 100rpx rgba(0,0,0,0.3);
+}
+
+.extra-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40rpx;
+}
+
+.extra-form-title {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #1A3A5F;
+}
+
+.extra-form-close {
+  font-size: 36rpx;
+  color: #94a3b8;
+  padding: 8rpx;
+}
+
+.extra-form-body {
+  margin-bottom: 32rpx;
+}
+
+.extra-form-group {
+  margin-bottom: 24rpx;
+}
+
+.extra-form-label {
+  font-size: 26rpx;
+  color: #475569;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.extra-form-input {
+  width: 100%;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 20rpx;
+  padding: 22rpx 24rpx;
+  font-size: 28rpx;
+  color: #1e293b;
+  background: #f8fafc;
+  box-sizing: border-box;
+}
+
+.extra-form-submit {
   width: 100%;
   background: linear-gradient(135deg, #3B66F5, #22d3ee) !important;
   color: #fff !important;

@@ -66,6 +66,9 @@ Page({
     memberInfo: null,
     // 雷达图标红标记
     alertFlags: [false, false, false, false, false, false],
+    // 宠物列表（多宠物切换）
+    petList: [],
+    showPetPicker: false,
     // 邀请相关
     showInviteCard: false,
     inviteCode: '',
@@ -77,7 +80,11 @@ Page({
     // 宠物信息表单
     showPetForm: false,
     petForm: { name: '', breed: '', weight_kg: '', age_years: '' },
-    formSubmitting: false
+    formSubmitting: false,
+    // 额外记录表单
+    showExtraForm: false,
+    extraForm: { name: '', amount: '' },
+    extraSubmitting: false
   },
 
   onLoad() {
@@ -128,11 +135,20 @@ Page({
       }
 
       // 状态3：正常展示真实数据
-      const pet = petRes.data[0]
-      if (typeof pet.health_tags === 'string') {
-        pet.health_tags = JSON.parse(pet.health_tags || '[]')
+      const pets = petRes.data.map(p => {
+        if (typeof p.health_tags === 'string') {
+          p.health_tags = JSON.parse(p.health_tags || '[]')
+        }
+        return p
+      })
+      // 如果之前已选中某宠物，保持选中；否则选第一只；如果是新增宠物则选最后一只
+      const currentPetId = this.data.pet && this.data.pet.id
+      let pet = pets.find(p => p.id === currentPetId) || pets[0]
+      if (this._selectLastPet) {
+        pet = pets[pets.length - 1]
+        this._selectLastPet = false
       }
-      this.setData({ pageState: 'live', pet })
+      this.setData({ pageState: 'live', pet, petList: pets })
 
       const petId = pet.id
       const [formulaRes, reportRes, careRes, mealRes, articleRes, memberRes] = await Promise.allSettled([
@@ -233,7 +249,8 @@ Page({
       })
       wx.showToast({ title: '添加成功', icon: 'success' })
       this.setData({ showPetForm: false })
-      // 重新加载真实数据
+      // 标记选最新添加的宠物，然后重新加载
+      this._selectLastPet = true
       this.loadAllData()
     } catch (e) {
       wx.showToast({ title: '提交失败，请重试', icon: 'none' })
@@ -244,6 +261,134 @@ Page({
 
   closePetForm() {
     this.setData({ showPetForm: false })
+  },
+
+  // ========== 宠物切换 ==========
+  togglePetPicker() {
+    if (this.data.pageState !== 'live') { this._guardTip(); return }
+    this.setData({ showPetPicker: !this.data.showPetPicker })
+  },
+
+  onAddNewPet() {
+    this.setData({
+      showPetPicker: false,
+      showPetForm: true,
+      petForm: { name: '', breed: '', weight_kg: '', age_years: '' }
+    })
+  },
+
+  async onSwitchPet(e) {
+    const idx = e.currentTarget.dataset.index
+    const pet = this.data.petList[idx]
+    if (pet.id === this.data.pet.id) {
+      this.setData({ showPetPicker: false })
+      return
+    }
+    this.setData({ showPetPicker: false, pet })
+    // 重新加载该宠物的所有数据
+    const petId = pet.id
+    const [formulaRes, reportRes, careRes, mealRes] = await Promise.allSettled([
+      request({ url: `/pets/${petId}/formula` }),
+      request({ url: `/pets/${petId}/medical-report` }),
+      request({ url: `/pets/${petId}/daily-care/today` }),
+      request({ url: `/pets/${petId}/meal-plan` })
+    ])
+    if (formulaRes.status === 'fulfilled' && formulaRes.value.data) {
+      this.setData({ formula: formulaRes.value.data.formula, ingredients: formulaRes.value.data.ingredients || [] })
+    }
+    if (reportRes.status === 'fulfilled' && reportRes.value.data) {
+      const report = reportRes.value.data
+      if (typeof report.radar_data === 'string') report.radar_data = JSON.parse(report.radar_data || '{}')
+      const keys = ['消化系统', '骨骼肌肉', '皮肤毛发', '心血管', '免疫系统', '内分泌']
+      const alertFlags = keys.map(k => (report.radar_data[k] || 100) < 60)
+      this.setData({ report, alertFlags })
+      this.drawRadar(report.radar_data)
+    }
+    if (careRes.status === 'fulfilled' && careRes.value.data) {
+      const care = careRes.value.data
+      if (typeof care.extra_records === 'string') care.extra_records = JSON.parse(care.extra_records || '[]')
+      const waterTarget = care.water_target_ml || 1000
+      this.setData({
+        dailyCare: care, waterIntake: care.water_ml || 0, waterTarget,
+        waterPercent: Math.min(((care.water_ml || 0) / waterTarget) * 100, 100)
+      })
+    }
+    if (mealRes.status === 'fulfilled' && mealRes.value.data) {
+      this.setData({ mealPlan: mealRes.value.data })
+    }
+  },
+
+  // ========== 喂食标记 ==========
+  async onFeedMeal(e) {
+    if (this.data.pageState !== 'live') { this._guardTip(); return }
+    const type = e.currentTarget.dataset.type // meat / middle / veggie
+    const fedKey = `dailyCare.${type}_fed`
+    if (this.data.dailyCare[`${type}_fed`]) return // 已标记则忽略
+
+    this.setData({ [fedKey]: true })
+    wx.vibrateShort({ type: 'light' })
+
+    // 构建提交数据：把对应类型的克数作为已喂食
+    const dc = this.data.dailyCare
+    const feedData = {}
+    if (type === 'meat') feedData.meat_g = dc.meat_g
+    if (type === 'middle') feedData.middle_g = dc.middle_g
+    if (type === 'veggie') feedData.veggie_g = dc.veggie_g
+
+    try {
+      await request({
+        url: `/pets/${this.data.pet.id}/daily-care/feeding`,
+        method: 'POST',
+        data: feedData
+      })
+    } catch (e) {
+      // 回滚
+      this.setData({ [fedKey]: false })
+      wx.showToast({ title: '标记失败', icon: 'none' })
+    }
+  },
+
+  // ========== 额外记录 ==========
+  onAddExtraRecord() {
+    if (this.data.pageState !== 'live') { this._guardTip(); return }
+    this.setData({ showExtraForm: true, extraForm: { name: '', amount: '' } })
+  },
+
+  onExtraFormInput(e) {
+    const field = e.currentTarget.dataset.field
+    this.setData({ [`extraForm.${field}`]: e.detail.value })
+  },
+
+  closeExtraForm() {
+    this.setData({ showExtraForm: false })
+  },
+
+  async submitExtraRecord() {
+    const { name, amount } = this.data.extraForm
+    if (!name.trim()) {
+      wx.showToast({ title: '请填写名称', icon: 'none' })
+      return
+    }
+    this.setData({ extraSubmitting: true })
+    try {
+      const res = await request({
+        url: `/pets/${this.data.pet.id}/daily-care/extra`,
+        method: 'POST',
+        data: { name: name.trim(), amount: amount.trim() || '' }
+      })
+      wx.showToast({ title: '添加成功', icon: 'success' })
+      this.setData({ showExtraForm: false })
+      // 更新本地额外记录列表
+      if (res.data && res.data.extra_records) {
+        let records = res.data.extra_records
+        if (typeof records === 'string') records = JSON.parse(records || '[]')
+        this.setData({ 'dailyCare.extra_records': records })
+      }
+    } catch (e) {
+      wx.showToast({ title: '添加失败', icon: 'none' })
+    } finally {
+      this.setData({ extraSubmitting: false })
+    }
   },
 
   // ========== 跳转相关（非 live 状态拦截） ==========
@@ -271,15 +416,7 @@ Page({
     }).catch(() => {})
   },
 
-  onShareCard() {
-    if (this.data.pageState !== 'live') { this._guardTip(); return }
-    const { pet } = this.data
-    wx.showModal({
-      title: `分享${pet ? pet.name : ''}的档案`,
-      content: '点击右上角「···」可分享给好友',
-      showCancel: false, confirmText: '知道了'
-    })
-  },
+  // 分享档案已改为 button open-type="share"，直接触发 onShareAppMessage
 
   // ========== 邀请相关 ==========
   async onInviteFriend() {
@@ -290,6 +427,7 @@ Page({
     try {
       const res = await request({ url: '/invite/generate', method: 'POST' })
       if (res.data && res.data.invite_code) {
+        console.log('[邀请码]', res.data.invite_code, '→ 测试子用户页面：pages/invite-view/invite-view?code=' + res.data.invite_code)
         this.setData({
           inviteCode: res.data.invite_code,
           showInviteCard: true
@@ -297,6 +435,7 @@ Page({
         setTimeout(() => this.drawInviteCard(), 300)
       }
     } catch (e) {
+      console.error('[邀请生成失败]', e)
       wx.showToast({ title: '生成失败', icon: 'none' })
     } finally {
       this.setData({ inviteGenerating: false })
